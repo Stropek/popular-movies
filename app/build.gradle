@@ -28,13 +28,18 @@ android {
     repositories {
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        jcenter()
     }
 }
 
 static def getKey(String key){
     Properties props = new Properties()
-    props.load(new FileInputStream(new File('keys.properties')))
-    return props[key]
+    File keysFile = new File('keys.properties')
+    if (keysFile.isFile()) {
+        props.load(new FileInputStream(keysFile))
+        return props[key]
+    }
+    return "\"\""
 }
 
 dependencies {
