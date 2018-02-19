@@ -6,15 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.example.pscurzytek.popularmovies.MainActivity">
 
-    <GridLayout
-        android:id="@+id/thumbnails_gv"
+    <GridView
+        android:id="@+id/thumbnails_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:columnWidth="150dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        tools:context=".MainActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </GridLayout>
+    </GridView>
 
 </android.support.constraint.ConstraintLayout>
