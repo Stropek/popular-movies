@@ -9,8 +9,6 @@ import com.example.pscurzytek.popularmovies.services.MovieService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
-
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)

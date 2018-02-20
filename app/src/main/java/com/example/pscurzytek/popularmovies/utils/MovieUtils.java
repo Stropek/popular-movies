@@ -5,13 +5,8 @@ import com.example.pscurzytek.popularmovies.models.Movie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.IDN;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by p.s.curzytek on 2/19/2018.
- */
 
 public class MovieUtils {
 

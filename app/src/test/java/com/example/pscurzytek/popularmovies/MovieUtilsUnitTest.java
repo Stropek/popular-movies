@@ -33,7 +33,7 @@ public class MovieUtilsUnitTest {
                 "            \"popularity\": 15.8,\n" +
                 "            \"poster_path\": \"/path.jpg\",\n" +
                 "            \"original_language\": \"hi\",\n" +
-                "            \"original_title\": \"titulo de pelicula\",\n" +
+                "            \"original_title\": \"title in spanish\",\n" +
                 "            \"genre_ids\": [\n" +
                 "                2,\n" +
                 "                4,\n" +
@@ -58,7 +58,7 @@ public class MovieUtilsUnitTest {
         assertEquals(15.8, result.getPopularity());
         assertEquals("/path.jpg", result.getPosterPath());
         assertEquals("hi", result.getOriginalLanguage());
-        assertEquals("titulo de pelicula", result.getOriginalTitle());
+        assertEquals("title in spanish", result.getOriginalTitle());
         assertEquals(false, result.hasVideo());
         assertEquals("/backdrop.jpg", result.getBackdropPath());
         assertEquals(false, result.isAdult());

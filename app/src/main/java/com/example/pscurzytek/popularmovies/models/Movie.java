@@ -2,25 +2,21 @@ package com.example.pscurzytek.popularmovies.models;
 
 import java.util.List;
 
-/**
- * Created by p.s.curzytek on 2/19/2018.
- */
-
 public class Movie {
-    private int id;
-    private String title;
-    private int voteCount;
-    private double voteAverage;
-    private double popularity;
-    private String posterPath;
-    private String originalLanguage;
-    private String originalTitle;
-    private boolean hasVideo;
-    private String backdropPath;
-    private boolean isAdult;
-    private String overview;
-    private String releaseDate;
-    private List<Integer> genreIds;
+    private final int id;
+    private final String title;
+    private final int voteCount;
+    private final double voteAverage;
+    private final double popularity;
+    private final String posterPath;
+    private final String originalLanguage;
+    private final String originalTitle;
+    private final boolean hasVideo;
+    private final String backdropPath;
+    private final boolean isAdult;
+    private final String overview;
+    private final String releaseDate;
+    private final List<Integer> genreIds;
 
     public Movie(int id, String title, int voteCount, double voteAverage, double popularity, String posterPath, String originalLanguage,
                  String originalTitle, boolean hasVideo, String backdropPath, boolean isAdult, String overview, String releaseDate, List<Integer> genreIds) {
