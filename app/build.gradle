@@ -30,6 +30,9 @@ android {
         maven { url 'https://jitpack.io' }
         jcenter()
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 static def getKey(String key){
