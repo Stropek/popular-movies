@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 27
@@ -23,6 +22,7 @@ android {
         debug {
             minifyEnabled false
             buildConfigField("String", "MOVIE_DATABASE_API_KEY", getKey("DEBUG.MOVIE_DATABASE_API_KEY"))
+            testCoverageEnabled true
         }
     }
     repositories {
