@@ -36,8 +36,8 @@ public class MovieUtilsUnitTest {
                 "            \"original_title\": \"title in spanish\",\n" +
                 "            \"genre_ids\": [\n" +
                 "                2,\n" +
-                "                4,\n" +
-                "                8\n" +
+                "                test,\n" +
+                "                4\n" +
                 "            ],\n" +
                 "            \"backdrop_path\": \"/backdrop.jpg\",\n" +
                 "            \"adult\": false,\n" +
@@ -66,6 +66,5 @@ public class MovieUtilsUnitTest {
         assertEquals("1995-10-20", result.getReleaseDate());
         assertEquals(2, result.getGenreIds().get(0).intValue());
         assertEquals(4, result.getGenreIds().get(1).intValue());
-        assertEquals(8, result.getGenreIds().get(2).intValue());
     }
 }
