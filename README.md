@@ -1,6 +1,7 @@
 # Popular Movies
 
 [![Build Status](https://travis-ci.org/Stropek/popular-movies.svg?branch=master)](https://travis-ci.org/Stropek/popular-movies)
+[![Codecov](https://img.shields.io/codecov/c/github/Stropek/popular-movies.svg)](https://codecov.io/github/Stropek/popular-movies)
 
 This is my solution to _Popular Movies - stage 1_ project from __Android Developer Nanodegree Program__
 
