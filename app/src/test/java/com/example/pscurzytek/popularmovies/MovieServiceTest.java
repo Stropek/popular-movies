@@ -1,15 +1,9 @@
 package com.example.pscurzytek.popularmovies;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
@@ -18,8 +12,11 @@ public class MovieServiceTest {
 
     @Test
     public void useMockMovieApi() {
-        Object test = BuildConfig.MOVIE_DATABASE_API_KEY;
-        assertEquals("http://localhost:5000/mockApi/", BuildConfig.MOVIE_DATABASE_BASE_URL);
+        if (BuildConfig.BUILD_TYPE.contentEquals("staging")) {
+            assertEquals("http://localhost:5000/mockMovieApi/", BuildConfig.MOVIE_DATABASE_BASE_URL);
+        } else {
+            assertEquals("https://api.themoviedb.org/3/movie/", BuildConfig.MOVIE_DATABASE_BASE_URL);
+        }
     }
 
     @Test
