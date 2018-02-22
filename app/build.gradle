@@ -27,6 +27,7 @@ android {
             testCoverageEnabled true
         }
         staging {
+            signingConfig signingConfigs.debug
             minifyEnabled false
             buildConfigField("String", "MOVIE_DATABASE_BASE_URL", "\"http://localhost:5000/mockMovieApi/\"")
             buildConfigField("String", "MOVIE_DATABASE_API_KEY", "\"1234567890\"")
