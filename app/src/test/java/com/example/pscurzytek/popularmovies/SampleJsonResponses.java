@@ -1,6 +1,10 @@
 package com.example.pscurzytek.popularmovies;
 
 class SampleJsonResponses {
+    final static String InvalidIdSingleMovieResponse = "{\n" +
+            "            \"id\": 0\n" +
+            "        }";
+
     final static String SingleMovieResponse = "{\n" +
             "            \"vote_count\": 10,\n" +
             "            \"id\": 1,\n" +
@@ -27,6 +31,9 @@ class SampleJsonResponses {
             "    \"total_results\": 100,\n" +
             "    \"total_pages\": 10,\n" +
             "    \"results\": [\n" +
+            "        {\n" +
+            "            \"id\": 0\n" +
+            "        },\n" +
             "        {\n" +
             "            \"vote_count\": 10,\n" +
             "            \"id\": 1,\n" +

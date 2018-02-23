@@ -30,6 +30,10 @@ public class MovieUtils {
         }
 
         int id = jsonObject.optInt(ID);
+        if (id <= 0) {
+            return null;
+        }
+
         String title = jsonObject.optString(Title);
         int voteCount = jsonObject.optInt(VoteCount);
         double voteAverage = jsonObject.optDouble(VoteAverage);

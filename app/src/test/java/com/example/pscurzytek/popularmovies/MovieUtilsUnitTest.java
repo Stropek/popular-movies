@@ -23,6 +23,19 @@ public class MovieUtilsUnitTest {
     }
 
     @Test
+    public void convertToMovie_validJsonObjectWithInvalidId_returnsNull() throws JSONException {
+        // given
+        String json = SampleJsonResponses.InvalidIdSingleMovieResponse;
+        JSONObject jsonObject = new JSONObject(json);
+
+        // when
+        Movie result = MovieUtils.convertToMovie(jsonObject);
+
+        // then
+        assertEquals(null, result);
+    }
+
+    @Test
     public void convertToMovie_validJsonObject_returnsMovie() throws JSONException {
         // given
         String json = SampleJsonResponses.SingleMovieResponse;
@@ -52,7 +65,7 @@ public class MovieUtilsUnitTest {
     @Test
     public void convertToMovies_nullJsonObject_returnsNull() throws JSONException {
         // when
-        Movie result = MovieUtils.convertToMovie(null);
+        List<Movie> result = MovieUtils.convertToMovies(null);
 
         // then
         assertEquals(null, result);
