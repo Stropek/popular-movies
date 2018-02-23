@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieUtils {
-
     private static final String ID = "id";
     private static final String Title = "title";
     private static final String VoteCount = "vote_count";
@@ -56,5 +55,22 @@ public class MovieUtils {
 
         return new Movie(id, title, voteCount, voteAverage, popularity, posterPath, originalLanguage,
                 originalTitle, hasVideo, backdropPath, isAdult, overview, releaseDate, genreIds);
+    }
+
+    public static List<Movie> convertToMovies(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+
+        JSONArray array = jsonObject.optJSONArray("results");
+        List<Movie> movies = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            Movie movie = MovieUtils.convertToMovie(array.optJSONObject(i));
+            if (movie != null) {
+                movies.add(movie);
+            }
+        }
+        return movies;
     }
 }
