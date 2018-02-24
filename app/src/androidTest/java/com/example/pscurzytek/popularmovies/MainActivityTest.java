@@ -1,4 +1,4 @@
-package com.example.pscurzytek;
+package com.example.pscurzytek.popularmovies;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
