@@ -68,15 +68,15 @@ public class MovieServiceTest {
     @Test
     public void getTopRated_returnsListOfFilmsWithDescendingRate() {
         // given
-//        _server.expect(get("/top_rated?api_key=1234567890&language=en-US&page=1"))
-//                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
-//        MovieService movieService = new MovieService();
-//
-//        // when
-//        List<Movie> result = movieService.getTopRated(null);
-//
-//        // then
-//        assertEquals(2, result.size());
+        _server.expect(get("/top_rated?api_key=1234567890&language=en-US&page=1"))
+                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        MovieService movieService = new MovieService();
+
+        // when
+        List<Movie> result = movieService.getTopRated(null);
+
+        // then
+        assertEquals(2, result.size());
     }
 
     @Test
