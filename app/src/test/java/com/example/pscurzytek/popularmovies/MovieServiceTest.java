@@ -54,15 +54,15 @@ public class MovieServiceTest {
     @Test
     public void getPopular_pageProvided_returnsListOfFilmsWithDescendingPopularity() {
         // given
-//        _server.expect(get("/popular?api_key=1234567890&language=en-US&page=3"))
-//                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
-//        MovieService movieService = new MovieService();
+        _server.expect(get("/popular?api_key=1234567890&language=en-US&page=3"))
+                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        MovieService movieService = new MovieService();
 
         // when
-//        List<Movie> result = movieService.getPopular(3);
+        List<Movie> result = movieService.getPopular(3);
 
         // then
-//        assertEquals(2, result.size());
+        assertEquals(2, result.size());
     }
 
     @Test
