@@ -11,7 +11,7 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static junit.framework.Assert.assertEquals;
 
-public class MovieServiceTest {
+public class MovieServiceTests {
 
     private final WireMockServer _wireMockServer = new WireMockServer();
 

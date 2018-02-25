@@ -11,7 +11,16 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-public class MovieUtilsUnitTest {
+public class MovieUtilsTests {
+
+    @Test
+    public void constructor_createsValidObject() {
+        // when
+        MovieUtils utils = new MovieUtils();
+
+        // then
+        assertEquals(MovieUtils.class.getName(), utils.getClass().getName());
+    }
 
     @Test
     public void convertToMovie_nullJsonObject_returnsNull() throws JSONException {
