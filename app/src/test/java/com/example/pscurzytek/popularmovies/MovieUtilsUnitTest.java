@@ -25,7 +25,7 @@ public class MovieUtilsUnitTest {
     @Test
     public void convertToMovie_validJsonObjectWithInvalidId_returnsNull() throws JSONException {
         // given
-        String json = SampleJsonResponses.InvalidIdSingleMovieResponse;
+        String json = MockResponses.InvalidIdSingleMovieResponse;
         JSONObject jsonObject = new JSONObject(json);
 
         // when
@@ -38,7 +38,7 @@ public class MovieUtilsUnitTest {
     @Test
     public void convertToMovie_validJsonObject_returnsMovie() throws JSONException {
         // given
-        String json = SampleJsonResponses.SingleMovieResponse;
+        String json = MockResponses.SingleMovieResponse;
         JSONObject jsonObject = new JSONObject(json);
 
         // when
@@ -74,7 +74,7 @@ public class MovieUtilsUnitTest {
     @Test
     public void convertToMovies_validJsonObject_returnsListOfMovies() throws JSONException {
         // given
-        String json = SampleJsonResponses.MoviesPageResponse;
+        String json = MockResponses.MoviesPageResponse;
         JSONObject jsonObject = new JSONObject(json);
 
         // when

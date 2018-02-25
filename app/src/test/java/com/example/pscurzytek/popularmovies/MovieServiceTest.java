@@ -2,36 +2,33 @@ package com.example.pscurzytek.popularmovies;
 
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.example.pscurzytek.popularmovies.services.MovieService;
-import com.pyruby.stubserver.StubServer;
+import com.github.tomakehurst.wiremock.WireMockServer;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
-import static com.pyruby.stubserver.StubMethod.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static junit.framework.Assert.assertEquals;
 
 public class MovieServiceTest {
 
-    private StubServer _server;
+    private final WireMockServer _wireMockServer = new WireMockServer();
 
     @Before
-    public void setUp() {
-        _server = new StubServer(5000);
-        _server.start();
+    public void testSetUp() {
+        _wireMockServer.start();
     }
 
     @After
-    public void cleanUp() {
-        _server.stop();
+    public void testTearDown() {
+        _wireMockServer.stop();
     }
 
     @Test
     public void useMockMovieApi() {
         if (BuildConfig.BUILD_TYPE.contentEquals("staging")) {
-            assertEquals("http://localhost:5000", BuildConfig.MOVIE_DATABASE_BASE_URL);
+            assertEquals("http://localhost:8080", BuildConfig.MOVIE_DATABASE_BASE_URL);
         } else {
             assertEquals("https://api.themoviedb.org/3/movie", BuildConfig.MOVIE_DATABASE_BASE_URL);
         }
@@ -40,8 +37,14 @@ public class MovieServiceTest {
     @Test
     public void getPopular_returnsListOfFilmsWithDescendingPopularity() {
         // given
-        _server.expect(get("/popular?api_key=1234567890&language=en-US&page=1"))
-                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        stubFor(get(urlPathEqualTo("/popular"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.MoviesPageResponse)));
+
         MovieService movieService = new MovieService();
 
         // when
@@ -54,8 +57,14 @@ public class MovieServiceTest {
     @Test
     public void getPopular_pageProvided_returnsListOfFilmsWithDescendingPopularity() {
         // given
-        _server.expect(get("/popular?api_key=1234567890&language=en-US&page=3"))
-                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        stubFor(get(urlPathEqualTo("/popular"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("3"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.MoviesPageResponse)));
+
         MovieService movieService = new MovieService();
 
         // when
@@ -68,8 +77,14 @@ public class MovieServiceTest {
     @Test
     public void getTopRated_returnsListOfFilmsWithDescendingRate() {
         // given
-        _server.expect(get("/top_rated?api_key=1234567890&language=en-US&page=1"))
-                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        stubFor(get(urlPathEqualTo("/top_rated"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.MoviesPageResponse)));
+
         MovieService movieService = new MovieService();
 
         // when
@@ -82,8 +97,14 @@ public class MovieServiceTest {
     @Test
     public void getTopRated_pageProvided_returnsListOfFilmsWithDescendingRate() {
         // given
-        _server.expect(get("/top_rated?api_key=1234567890&language=en-US&page=3"))
-                .thenReturn(200, "application/json", SampleJsonResponses.MoviesPageResponse);
+        stubFor(get(urlPathEqualTo("/top_rated"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("3"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.MoviesPageResponse)));
+
         MovieService movieService = new MovieService();
 
         // when

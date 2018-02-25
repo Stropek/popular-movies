@@ -29,7 +29,7 @@ android {
         staging {
             signingConfig signingConfigs.debug
             minifyEnabled false
-            buildConfigField("String", "MOVIE_DATABASE_BASE_URL", "\"http://localhost:5000\"")
+            buildConfigField("String", "MOVIE_DATABASE_BASE_URL", "\"http://localhost:8080\"")
             buildConfigField("String", "MOVIE_DATABASE_API_KEY", "\"1234567890\"")
             testCoverageEnabled true
         }
@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'org.testng:testng:6.9.6'
-    testImplementation 'com.pyruby:java-stub-server:0.12'
+    testImplementation 'com.github.tomakehurst:wiremock:2.14.0'
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'

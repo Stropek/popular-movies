@@ -1,6 +1,6 @@
 package com.example.pscurzytek.popularmovies;
 
-class SampleJsonResponses {
+class MockResponses {
     final static String InvalidIdSingleMovieResponse = "{\n" +
             "            \"id\": 0\n" +
             "        }";
