@@ -74,7 +74,7 @@ android {
     testBuildType "staging"
 }
 
-static def getKey(String key){
+static def getKey(String key) {
     Properties props = new Properties()
     File keysFile = new File('keys.properties')
     if (keysFile.isFile()) {
