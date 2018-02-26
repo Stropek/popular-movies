@@ -21,8 +21,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testStagingUnitTest', 'cr
     def fileFilter = [
             '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*', '**/*$[0-9].*'
     ]
-    def stagingTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/staging", excludes: fileFilter)
-    def mainSrc = "$project.projectDir/src/main/kotlin"
+    def stagingTree = fileTree(dir: "$project.buildDir/intermediates/classes/staging", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
 
     sourceDirectories = files([mainSrc])
     classDirectories = files([stagingTree])
@@ -41,6 +41,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        jcenter()
     }
     buildTypes {
         release {
@@ -63,15 +68,10 @@ android {
             testCoverageEnabled true
         }
     }
-    repositories {
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-        jcenter()
-    }
+    testBuildType "staging"
     lintOptions {
         abortOnError false
     }
-    testBuildType "staging"
 }
 
 static def getKey(String key) {
