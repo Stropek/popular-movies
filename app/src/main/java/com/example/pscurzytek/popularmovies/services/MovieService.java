@@ -30,6 +30,4 @@ public class MovieService {
 
         return MovieUtils.convertToMovies(jsonObject);
     }
-
-    private static final String TAG = MovieService.class.getName();
 }

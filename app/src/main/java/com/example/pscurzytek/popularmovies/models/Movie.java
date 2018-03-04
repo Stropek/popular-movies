@@ -3,6 +3,8 @@ package com.example.pscurzytek.popularmovies.models;
 import java.util.List;
 
 public class Movie {
+    private final String basePosterPath = "http://image.tmdb.org/t/p/w185";
+
     private final int id;
     private final String title;
     private final int voteCount;
@@ -58,6 +60,10 @@ public class Movie {
 
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public String getFullPosterPath() {
+        return String.format("%s%s", basePosterPath, posterPath);
     }
 
     public String getOriginalLanguage() {
