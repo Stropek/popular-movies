@@ -60,6 +60,7 @@ public class MovieUtilsTests {
         assertEquals(10.5, result.getVoteAverage());
         assertEquals(15.8, result.getPopularity());
         assertEquals("/path.jpg", result.getPosterPath());
+        assertEquals("http://image.tmdb.org/t/p/w185/path.jpg", result.getFullPosterPath());
         assertEquals("hi", result.getOriginalLanguage());
         assertEquals("title in spanish", result.getOriginalTitle());
         assertEquals(false, result.hasVideo());
