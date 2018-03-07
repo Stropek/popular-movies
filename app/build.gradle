@@ -94,6 +94,11 @@ dependencies {
     implementation 'com.android.support.test:runner:1.0.1'
     implementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'junit:junit:4.12'
+    implementation 'com.google.dagger:dagger:2.14.1'
+    implementation 'com.google.dagger:dagger-android:2.14.1'
+    implementation 'com.google.dagger:dagger-android-support:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
     testImplementation 'com.github.tomakehurst:wiremock:2.14.0'
     testImplementation 'org.testng:testng:6.9.6'
 }
