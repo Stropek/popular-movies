@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = { AppModule.class, MovieServiceModule.class} )
+@Component(modules = { MovieServiceModule.class} )
 public interface AppComponent {
 
     void inject(PopularMoviesApp app);
