@@ -1,11 +1,15 @@
 package com.example.pscurzytek.popularmovies.activities;
 
+import android.content.Intent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 
 import com.example.pscurzytek.popularmovies.PopularMoviesApp;
@@ -42,8 +46,20 @@ public class MainActivity extends AppCompatActivity
 
         movieAdapter = new MovieAdapter(this);
 
-        GridView thumbnails = findViewById(R.id.thumbnails_grid);
+        final GridView thumbnails = findViewById(R.id.thumbnails_grid);
         thumbnails.setAdapter(movieAdapter);
+        thumbnails.setClickable(true);
+        thumbnails.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie movie = (Movie) thumbnails.getItemAtPosition(position);
+
+                Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
+                intent.putExtra("movie_data", movie);
+
+                startActivity(intent);
+            }
+        });
 
         getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
     }

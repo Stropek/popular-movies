@@ -1,8 +1,9 @@
 package com.example.pscurzytek.popularmovies.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Movie {
+public class Movie implements Serializable {
     private final String basePosterPath = "http://image.tmdb.org/t/p/w185";
 
     private final int id;

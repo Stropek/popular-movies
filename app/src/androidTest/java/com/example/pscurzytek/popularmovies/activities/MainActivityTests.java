@@ -90,12 +90,15 @@ public class MainActivityTests {
     @Test
     public void clickThumbnail_displaysMovieDetails() {
         // given
+        when(movieService.getPopular(null)).thenReturn(createMovies(1));
+
+        testRule.launchActivity(null);
 
         // when
         onData(withMovieId(1)).perform(click());
 
         // then
-
+        onView(withText("Movie details"));
     }
 
     private Movie createMovie(int id, String posterPath) {
