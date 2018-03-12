@@ -1,10 +1,9 @@
 package com.example.pscurzytek.popularmovies.activities;
 
+import android.app.Activity;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.ArrayAdapter;
 
 import com.example.pscurzytek.popularmovies.DaggerTestAppComponent;
 import com.example.pscurzytek.popularmovies.PopularMoviesApp;
@@ -25,17 +24,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.example.pscurzytek.popularmovies.espresso.MovieMatchers.withMovieId;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.core.Is.is;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.*;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static com.example.pscurzytek.popularmovies.espresso.MovieMatchers.*;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -45,7 +42,7 @@ public class MainActivityTests {
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
     @Inject
-    public MovieService movieService;
+    MovieService movieService;
 
     @Before
     public void setUp() {
@@ -61,15 +58,44 @@ public class MainActivityTests {
     }
 
     @Test
-    public void default_loadsPopularMovies() {
+    public void default_displaysMostPopularMovies() {
         // given
-        when(movieService.getPopular(null)).thenReturn(createMovies(10));
+        List<Movie> movies = createMovies(10);
+        when(movieService.getPopular(null)).thenReturn(movies);
 
         // when
         testRule.launchActivity(null);
 
         // then
-        onData(withMovieId(10));
+        onView(withId(R.id.thumbnails_grid)).check(matches(withAdaptedData(withMovieId(10))));
+    }
+
+    @Test
+    public void toggleSortOrder_displaysHighestRatedMovies() {
+        // given
+        List<Movie> movies = createMovies(10);
+        when(movieService.getTopRated(null)).thenReturn(movies);
+
+        testRule.launchActivity(null);
+        onView(withId(R.id.thumbnails_grid)).check(matches(not(withAdaptedData(withMovieId(1)))));
+
+        // when
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withText("Top rated")).perform(click());
+
+        // then
+        onView(withId(R.id.thumbnails_grid)).check(matches(withAdaptedData(withMovieId(10))));
+    }
+
+    @Test
+    public void clickThumbnail_displaysMovieDetails() {
+        // given
+
+        // when
+        onData(withMovieId(1)).perform(click());
+
+        // then
+
     }
 
     private Movie createMovie(int id, String posterPath) {
