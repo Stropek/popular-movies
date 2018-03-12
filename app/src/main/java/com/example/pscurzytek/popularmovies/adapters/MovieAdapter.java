@@ -12,6 +12,8 @@ import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     public MovieAdapter(@NonNull Context context) {
@@ -31,7 +33,9 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
         if (movie != null) {
             ImageView image = convertView.findViewById(R.id.movie_iv);
+
             Picasso.with(context).load(movie.getFullPosterPath()).into(image);
+            image.setContentDescription(movie.getTitle());
         }
 
         return convertView;

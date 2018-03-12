@@ -101,4 +101,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
     testImplementation 'com.github.tomakehurst:wiremock:2.14.0'
     testImplementation 'org.testng:testng:6.9.6'
+    androidTestImplementation 'org.mockito:mockito-core:2.11.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.11.0'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
 }
