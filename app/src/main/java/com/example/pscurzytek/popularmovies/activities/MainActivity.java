@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 
+import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.adapters.MovieAdapter;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity
                 Movie movie = (Movie) thumbnails.getItemAtPosition(position);
 
                 Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
-                intent.putExtra("movie_data", movie);
+                intent.putExtra(Constants.IntentKeys.MovieData, movie);
 
                 startActivity(intent);
             }
