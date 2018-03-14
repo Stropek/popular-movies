@@ -17,7 +17,6 @@ class MockResponses {
             "            \"original_title\": \"title in spanish\",\n" +
             "            \"genre_ids\": [\n" +
             "                2,\n" +
-            "                test,\n" +
             "                4\n" +
             "            ],\n" +
             "            \"backdrop_path\": \"/backdrop.jpg\",\n" +

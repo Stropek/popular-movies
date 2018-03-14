@@ -1,24 +1,36 @@
 package com.example.pscurzytek.popularmovies.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
 public class Movie implements Serializable {
-    private final String basePosterPath = "http://image.tmdb.org/t/p/w185";
+    private static final String basePosterPath = "http://image.tmdb.org/t/p/w185";
 
     private final int id;
     private final String title;
+    @SerializedName("vote_count")
     private final int voteCount;
+    @SerializedName("vote_average")
     private final double voteAverage;
     private final double popularity;
+    @SerializedName("poster_path")
     private final String posterPath;
+    @SerializedName("original_language")
     private final String originalLanguage;
+    @SerializedName("original_title")
     private final String originalTitle;
+    @SerializedName("video")
     private final boolean hasVideo;
+    @SerializedName("backdrop_path")
     private final String backdropPath;
+    @SerializedName("adult")
     private final boolean isAdult;
     private final String overview;
+    @SerializedName("release_date")
     private final String releaseDate;
+    @SerializedName("genre_ids")
     private final List<Integer> genreIds;
 
     public Movie(int id, String title, int voteCount, double voteAverage, double popularity, String posterPath, String originalLanguage,
