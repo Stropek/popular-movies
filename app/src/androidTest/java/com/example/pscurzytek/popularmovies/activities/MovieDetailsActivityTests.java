@@ -34,7 +34,7 @@ public class MovieDetailsActivityTests
         intent.putExtra(Constants.IntentKeys.MovieData, movie);
 
         // when
-        testRule.launchActivity(null);
+        testRule.launchActivity(intent);
 
         // then
         onView(withId(R.id.title_tv)).check(matches(withText("title")));
