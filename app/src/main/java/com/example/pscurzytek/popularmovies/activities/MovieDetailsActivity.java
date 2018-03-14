@@ -29,8 +29,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (movie != null) {
             titleTextView.setText(movie.getTitle());
             releaseDateTextView.setText(movie.getReleaseDate());
-            voteAverageTextView.setText(Double.toString(movie.getVoteAverage()));
+            voteAverageTextView.setText(String.format("%s", movie.getVoteAverage()));
             plotTextView.setText(movie.getOverview());
+            posterImageView.setContentDescription(movie.getFullPosterPath());
 
             Picasso.with(this).load(movie.getFullPosterPath()).into(posterImageView);
         }
