@@ -38,7 +38,7 @@ public class MovieServiceTests {
     public void getPopular_returnsListOfFilmsWithDescendingPopularity() {
         // given
         stubFor(get(urlPathEqualTo("/popular"))
-                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("api_key", matching(".*"))
                 .withQueryParam("language", equalTo("en-US"))
                 .withQueryParam("page", equalTo("1"))
                 .willReturn(aResponse()
@@ -58,7 +58,7 @@ public class MovieServiceTests {
     public void getPopular_pageProvided_returnsListOfFilmsWithDescendingPopularity() {
         // given
         stubFor(get(urlPathEqualTo("/popular"))
-                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("api_key", matching(".*"))
                 .withQueryParam("language", equalTo("en-US"))
                 .withQueryParam("page", equalTo("3"))
                 .willReturn(aResponse()
@@ -78,7 +78,7 @@ public class MovieServiceTests {
     public void getTopRated_returnsListOfFilmsWithDescendingRate() {
         // given
         stubFor(get(urlPathEqualTo("/top_rated"))
-                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("api_key", matching(".*"))
                 .withQueryParam("language", equalTo("en-US"))
                 .withQueryParam("page", equalTo("1"))
                 .willReturn(aResponse()
@@ -98,7 +98,7 @@ public class MovieServiceTests {
     public void getTopRated_pageProvided_returnsListOfFilmsWithDescendingRate() {
         // given
         stubFor(get(urlPathEqualTo("/top_rated"))
-                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("api_key", matching(".*"))
                 .withQueryParam("language", equalTo("en-US"))
                 .withQueryParam("page", equalTo("3"))
                 .willReturn(aResponse()
