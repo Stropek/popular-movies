@@ -11,7 +11,7 @@ import khttp.KHttp;
 
 public class MovieService {
     private final String BaseUrl = BuildConfig.MOVIE_DATABASE_BASE_URL;
-    private final String ApiKey = System.getenv("MOVIE_API_KEY");
+    private final String ApiKey = BuildConfig.MOVIE_DATABASE_API_KEY;
 
     public List<Movie> getPopular(Integer page) {
         page = page == null ? 1 : page;
