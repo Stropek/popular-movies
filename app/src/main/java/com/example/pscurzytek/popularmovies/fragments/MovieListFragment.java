@@ -1,5 +1,6 @@
 package com.example.pscurzytek.popularmovies.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,18 +36,18 @@ public class MovieListFragment extends Fragment
     private static final int MOVIE_LOADER_ID = 1;
     private SortOrder sortOrder = SortOrder.MostPopular;
 
-    private Context context;
+    private Activity activity;
     private MovieAdapter movieAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = getActivity();
 
-        PopularMoviesApp app = (PopularMoviesApp) getActivity().getApplication();
+        PopularMoviesApp app = (PopularMoviesApp) activity.getApplication();
         app.appComponent.inject(this);
 
-        context = getContext();
-        movieAdapter = new MovieAdapter(context);
+        movieAdapter = new MovieAdapter(activity);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -59,8 +60,9 @@ public class MovieListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        final GridView thumbnails = container.findViewById(R.id.thumbnails_grid);
+        final GridView thumbnails = view.findViewById(R.id.thumbnails_grid);
         thumbnails.setAdapter(movieAdapter);
         thumbnails.setClickable(true);
         thumbnails.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,12 +77,12 @@ public class MovieListFragment extends Fragment
             }
         });
 
-        return inflater.inflate(R.layout.fragment_movie_list, container, false);
+        return view;
     }
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new MovieLoader(context, movieService, sortOrder);
+        return new MovieLoader(activity, movieService, sortOrder);
     }
 
     @Override
