@@ -1,0 +1,54 @@
+package com.example.pscurzytek.popularmovies.fragments;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.pscurzytek.popularmovies.Constants;
+import com.example.pscurzytek.popularmovies.R;
+import com.example.pscurzytek.popularmovies.models.Movie;
+import com.squareup.picasso.Picasso;
+
+public class MovieDetailsFragment extends Fragment {
+
+    private Movie movie;
+    private Activity activity;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = getActivity();
+
+        Bundle arguments = getArguments();
+        movie = (Movie) arguments.getSerializable(Constants.BundleKeys.MovieDetails);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
+
+        TextView titleTextView = view.findViewById(R.id.title_tv);
+        TextView releaseDateTextView = view.findViewById(R.id.releaseDate_tv);
+        TextView voteAverageTextView = view.findViewById(R.id.voteAverage_tv);
+        TextView plotTextView = view.findViewById(R.id.plot_tv);
+        ImageView posterImageView = view.findViewById(R.id.poster_iv);
+
+        if (movie != null) {
+            titleTextView.setText(movie.getTitle());
+            releaseDateTextView.setText(movie.getReleaseDate());
+            voteAverageTextView.setText(String.format("%s", movie.getVoteAverage()));
+            plotTextView.setText(movie.getOverview());
+            posterImageView.setContentDescription(movie.getFullPosterPath());
+
+            Picasso.with(activity).load(movie.getFullPosterPath()).into(posterImageView);
+        }
+
+        return view;
+    }
+}

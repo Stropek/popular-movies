@@ -6,5 +6,6 @@ public class Constants {
     }
     public static class BundleKeys {
         public final static String SortOrder = "sort_order";
+        public final static String MovieDetails = "movie_details";
     }
 }

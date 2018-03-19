@@ -1,16 +1,20 @@
 package com.example.pscurzytek.popularmovies.activities;
 
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
+import com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment;
+import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 import com.example.pscurzytek.popularmovies.models.Movie;
-import com.squareup.picasso.Picasso;
 
 public class MovieDetailsActivity extends AppCompatActivity {
+
+    private Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,22 +22,35 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        handler = new Handler();
+
+        loadDetailsFragments();
+    }
+
+    private void loadDetailsFragments() {
+        Runnable pendingRunnable = new Runnable() {
+            public void run() {  // update the main content by replacing fragments
+                Fragment fragment = getHomeFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.movie_details_fl, fragment);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        };
+
+        handler.post(pendingRunnable);
+
+        invalidateOptionsMenu();
+    }
+
+    private Fragment getHomeFragment() {
+        Fragment fragment = new MovieDetailsFragment();
         Movie movie = (Movie) getIntent().getSerializableExtra(Constants.IntentKeys.MovieData);
 
-        TextView titleTextView = findViewById(R.id.title_tv);
-        TextView releaseDateTextView = findViewById(R.id.releaseDate_tv);
-        TextView voteAverageTextView = findViewById(R.id.voteAverage_tv);
-        TextView plotTextView = findViewById(R.id.plot_tv);
-        ImageView posterImageView = findViewById(R.id.poster_iv);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BundleKeys.MovieDetails, movie);
+        fragment.setArguments(bundle);
 
-        if (movie != null) {
-            titleTextView.setText(movie.getTitle());
-            releaseDateTextView.setText(movie.getReleaseDate());
-            voteAverageTextView.setText(String.format("%s", movie.getVoteAverage()));
-            plotTextView.setText(movie.getOverview());
-            posterImageView.setContentDescription(movie.getFullPosterPath());
-
-            Picasso.with(this).load(movie.getFullPosterPath()).into(posterImageView);
-        }
+        return fragment;
     }
 }
