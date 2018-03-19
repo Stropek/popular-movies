@@ -1,68 +1,31 @@
 package com.example.pscurzytek.popularmovies.activities;
 
-import android.content.Intent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.GridView;
 
 import com.example.pscurzytek.popularmovies.Constants;
-import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
-import com.example.pscurzytek.popularmovies.adapters.MovieAdapter;
 import com.example.pscurzytek.popularmovies.enums.SortOrder;
-import com.example.pscurzytek.popularmovies.loaders.MovieLoader;
-import com.example.pscurzytek.popularmovies.models.Movie;
-import com.example.pscurzytek.popularmovies.services.MovieService;
+import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 
-import java.util.List;
-
-import javax.inject.Inject;
-
-public class MainActivity extends AppCompatActivity
-    implements LoaderManager.LoaderCallbacks<List<Movie>>{
-
-    private static final int MOVIE_LOADER_ID = 1;
+public class MainActivity extends AppCompatActivity {
 
     private SortOrder sortOrder = SortOrder.MostPopular;
-
-    @Inject
-    public MovieService movieService;
-
-    private MovieAdapter movieAdapter;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PopularMoviesApp app = (PopularMoviesApp) getApplication();
-        app.appComponent.inject(this);
+        handler = new Handler();
 
-        movieAdapter = new MovieAdapter(this);
-
-        final GridView thumbnails = findViewById(R.id.thumbnails_grid);
-        thumbnails.setAdapter(movieAdapter);
-        thumbnails.setClickable(true);
-        thumbnails.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie movie = (Movie) thumbnails.getItemAtPosition(position);
-
-                Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
-                intent.putExtra(Constants.IntentKeys.MovieData, movie);
-
-                startActivity(intent);
-            }
-        });
-
-        getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+        loadMainFragments();
     }
 
     @Override
@@ -85,25 +48,35 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (current != sortOrder) {
-            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+            loadMainFragments();
         }
 
         return true;
     }
 
-    @Override
-    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new MovieLoader(this, movieService, sortOrder);
+    private void loadMainFragments() {
+        Runnable pendingRunnable = new Runnable() {
+            public void run() {  // update the main content by replacing fragments
+                Fragment fragment = getHomeFragment();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.movie_list_fl, fragment);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        };
+
+        handler.post(pendingRunnable);
+
+        invalidateOptionsMenu();
     }
 
-    @Override
-    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        movieAdapter.clear();
-        movieAdapter.addAll(data);
-    }
+    private Fragment getHomeFragment() {
+        Fragment fragment = new MovieListFragment();
 
-    @Override
-    public void onLoaderReset(Loader<List<Movie>> loader) {
-        movieAdapter.clear();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 }

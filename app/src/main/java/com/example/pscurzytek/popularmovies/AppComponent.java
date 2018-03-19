@@ -1,6 +1,6 @@
 package com.example.pscurzytek.popularmovies;
 
-import com.example.pscurzytek.popularmovies.activities.MainActivity;
+import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 import com.example.pscurzytek.popularmovies.services.MovieServiceModule;
 
 import javax.inject.Singleton;
@@ -13,5 +13,5 @@ public interface AppComponent {
 
     void inject(PopularMoviesApp app);
 
-    void inject(MainActivity activity);
+    void inject(MovieListFragment movieListFragment);
 }
