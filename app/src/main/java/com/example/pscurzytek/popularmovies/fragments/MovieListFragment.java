@@ -38,6 +38,7 @@ public class MovieListFragment extends Fragment
 
     private Activity activity;
     private MovieAdapter movieAdapter;
+    private OnLoadFinishedListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,10 +90,27 @@ public class MovieListFragment extends Fragment
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
         movieAdapter.clear();
         movieAdapter.addAll(data);
+        if (data.size() > 0) {
+            listener.onLoadFinished(data.get(0));
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
         movieAdapter.clear();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnLoadFinishedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+        }
+    }
+
+    public interface OnLoadFinishedListener {
+        void onLoadFinished(Movie movie);
     }
 }

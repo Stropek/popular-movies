@@ -16,7 +16,8 @@ import com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment;
 import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 import com.example.pscurzytek.popularmovies.models.Movie;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements MovieListFragment.OnLoadFinishedListener {
 
     private SortOrder sortOrder = SortOrder.MostPopular;
     private Handler handler;
@@ -66,20 +67,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.movie_list_fl, listFragment);
         fragmentTransaction.commit();
 
-        if (bigScreen) {
-//            Runnable detailsFragment = new Runnable() {
-//                public void run() {  // update the main content by replacing fragments
-//                    Fragment fragment = getDetailsFragment();
-//                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-//                    fragmentTransaction.replace(R.id.movie_details_fl, fragment);
-//                    fragmentTransaction.commitAllowingStateLoss();
-//                }
-//            };
-//
-//            handler.post(detailsFragment);
-        }
-
         invalidateOptionsMenu();
     }
 
@@ -93,15 +80,32 @@ public class MainActivity extends AppCompatActivity {
         return fragment;
     }
 
-    private Fragment getDetailsFragment() {
+    private Fragment getDetailsFragment(Movie movie) {
         Fragment fragment = new MovieDetailsFragment();
-        final GridView thumbnails = findViewById(R.id.thumbnails_grid);
-        Movie movie = (Movie) thumbnails.getItemAtPosition(0);
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BundleKeys.MovieDetails, movie);
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onLoadFinished(final Movie movie) {
+        if (bigScreen) {
+            Runnable detailsFragment = new Runnable() {
+                public void run() {  // update the main content by replacing fragments
+                    Fragment fragment = getDetailsFragment(movie);
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    fragmentTransaction.replace(R.id.movie_details_fl, fragment);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            };
+
+            handler.post(detailsFragment);
+        }
+
+        invalidateOptionsMenu();
     }
 }
