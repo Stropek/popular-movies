@@ -38,7 +38,9 @@ public class MovieListFragment extends Fragment
 
     private Activity activity;
     private MovieAdapter movieAdapter;
-    private OnLoadFinishedListener listener;
+
+    private OnMoviesLoadedListener moviesLoadedListener;
+    private OnMovieSelectedListener movieSelectedListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,10 +73,14 @@ public class MovieListFragment extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movie = (Movie) thumbnails.getItemAtPosition(position);
 
-                Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
-                intent.putExtra(Constants.IntentKeys.MovieData, movie);
+                if (movieSelectedListener.isBigScreen()) {
+                    movieSelectedListener.onMovieSelected(movie);
+                } else {
+                    Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
+                    intent.putExtra(Constants.IntentKeys.MovieData, movie);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -91,7 +97,7 @@ public class MovieListFragment extends Fragment
         movieAdapter.clear();
         movieAdapter.addAll(data);
         if (data.size() > 0) {
-            listener.onLoadFinished(data.get(0));
+            moviesLoadedListener.onMoviesLoaded(data.get(0));
         }
     }
 
@@ -104,13 +110,20 @@ public class MovieListFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (OnLoadFinishedListener) context;
+            moviesLoadedListener = (OnMoviesLoadedListener) context;
+            movieSelectedListener = (OnMovieSelectedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
         }
     }
 
-    public interface OnLoadFinishedListener {
-        void onLoadFinished(Movie movie);
+    public interface OnMoviesLoadedListener {
+        void onMoviesLoaded(Movie movie);
+    }
+
+    public interface OnMovieSelectedListener {
+        void onMovieSelected(Movie movie);
+
+        Boolean isBigScreen();
     }
 }
