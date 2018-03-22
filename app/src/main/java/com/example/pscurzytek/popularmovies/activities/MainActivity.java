@@ -11,12 +11,16 @@ import android.view.MenuItem;
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.enums.SortOrder;
+import com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment;
 import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
+import com.example.pscurzytek.popularmovies.models.Movie;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements MovieListFragment.OnMoviesLoadedListener, MovieListFragment.OnMovieSelectedListener {
 
     private SortOrder sortOrder = SortOrder.MostPopular;
     private Handler handler;
+    private boolean isBigScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         handler = new Handler();
+        isBigScreen = findViewById(R.id.movie_details_fl) != null;
 
         loadMainFragments();
     }
@@ -54,23 +59,36 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loadMainFragments() {
-        Runnable pendingRunnable = new Runnable() {
-            public void run() {  // update the main content by replacing fragments
-                Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.movie_list_fl, fragment);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
+    @Override
+    public void onMoviesLoaded(final Movie movie) {
+        if (isBigScreen) {
+            reloadDetailsFragment(movie);
+        }
+    }
 
-        handler.post(pendingRunnable);
+    @Override
+    public void onMovieSelected(Movie movie) {
+        if (isBigScreen) {
+            reloadDetailsFragment(movie);
+        }
+    }
+
+    @Override
+    public Boolean isBigScreen() {
+        return isBigScreen;
+    }
+
+    private void loadMainFragments() {
+        Fragment listFragment = getListFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.movie_list_fl, listFragment);
+        fragmentTransaction.commit();
 
         invalidateOptionsMenu();
     }
 
-    private Fragment getHomeFragment() {
+    private Fragment getListFragment() {
         Fragment fragment = new MovieListFragment();
 
         Bundle bundle = new Bundle();
@@ -78,5 +96,29 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    private Fragment getDetailsFragment(Movie movie) {
+        Fragment fragment = new MovieDetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.BundleKeys.MovieDetails, movie);
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    private void reloadDetailsFragment(final Movie movie) {
+        Runnable detailsFragment = new Runnable() {
+            public void run() {  // update the main content by replacing fragments
+                Fragment fragment = getDetailsFragment(movie);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                fragmentTransaction.replace(R.id.movie_details_fl, fragment);
+                fragmentTransaction.commitAllowingStateLoss();
+            }
+        };
+
+        handler.post(detailsFragment);
     }
 }

@@ -39,6 +39,9 @@ public class MovieListFragment extends Fragment
     private Activity activity;
     private MovieAdapter movieAdapter;
 
+    private OnMoviesLoadedListener moviesLoadedListener;
+    private OnMovieSelectedListener movieSelectedListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +73,14 @@ public class MovieListFragment extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Movie movie = (Movie) thumbnails.getItemAtPosition(position);
 
-                Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
-                intent.putExtra(Constants.IntentKeys.MovieData, movie);
+                if (movieSelectedListener.isBigScreen()) {
+                    movieSelectedListener.onMovieSelected(movie);
+                } else {
+                    Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
+                    intent.putExtra(Constants.IntentKeys.MovieData, movie);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -89,10 +96,34 @@ public class MovieListFragment extends Fragment
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
         movieAdapter.clear();
         movieAdapter.addAll(data);
+        if (data.size() > 0) {
+            moviesLoadedListener.onMoviesLoaded(data.get(0));
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
         movieAdapter.clear();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            moviesLoadedListener = (OnMoviesLoadedListener) context;
+            movieSelectedListener = (OnMovieSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+        }
+    }
+
+    public interface OnMoviesLoadedListener {
+        void onMoviesLoaded(Movie movie);
+    }
+
+    public interface OnMovieSelectedListener {
+        void onMovieSelected(Movie movie);
+
+        Boolean isBigScreen();
     }
 }
