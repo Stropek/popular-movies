@@ -51,7 +51,7 @@ public class MovieServiceTests {
         List<Movie> result = movieService.getPopular(null);
 
         // then
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class MovieServiceTests {
         List<Movie> result = movieService.getPopular(3);
 
         // then
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class MovieServiceTests {
         List<Movie> result = movieService.getTopRated(null);
 
         // then
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class MovieServiceTests {
         List<Movie> result = movieService.getTopRated(3);
 
         // then
-        assertEquals(2, result.size());
+        assertEquals(3, result.size());
     }
 
 
