@@ -17,7 +17,7 @@ public class JsonConverterTests {
     @Test
     public void convertToTrailer_nullJsonObject_returnsNull() throws JSONException {
         // when
-        Trailer result = JsonConverter.convertToTrailer(null);
+        Trailer result = JsonConverter.convertTo(null, Trailer.class);
 
         // then
         assertEquals(null, result);
