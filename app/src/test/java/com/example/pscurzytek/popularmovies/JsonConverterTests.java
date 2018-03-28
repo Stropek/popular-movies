@@ -1,7 +1,8 @@
 package com.example.pscurzytek.popularmovies;
 
 import com.example.pscurzytek.popularmovies.models.Movie;
-import com.example.pscurzytek.popularmovies.utils.MovieUtils;
+import com.example.pscurzytek.popularmovies.models.Trailer;
+import com.example.pscurzytek.popularmovies.utils.JsonConverter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,34 +12,21 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-public class MovieUtilsTests {
+public class JsonConverterTests {
 
     @Test
-    public void constructor_createsValidObject() {
+    public void convertToTrailer_nullJsonObject_returnsNull() throws JSONException {
         // when
-        MovieUtils utils = new MovieUtils();
-
-        // then
-        assertEquals(MovieUtils.class.getName(), utils.getClass().getName());
-    }
-
-    @Test
-    public void convertToMovie_nullJsonObject_returnsNull() throws JSONException {
-        // when
-        Movie result = MovieUtils.convertToMovie(null);
+        Trailer result = JsonConverter.convertToTrailer(null);
 
         // then
         assertEquals(null, result);
     }
 
     @Test
-    public void convertToMovie_validJsonObjectWithInvalidId_returnsNull() throws JSONException {
-        // given
-        String json = MockResponses.InvalidIdSingleMovieResponse;
-        JSONObject jsonObject = new JSONObject(json);
-
+    public void convertToMovie_nullJsonObject_returnsNull() throws JSONException {
         // when
-        Movie result = MovieUtils.convertToMovie(jsonObject);
+        Movie result = JsonConverter.convertTo(null, Movie.class);
 
         // then
         assertEquals(null, result);
@@ -51,7 +39,7 @@ public class MovieUtilsTests {
         JSONObject jsonObject = new JSONObject(json);
 
         // when
-        Movie result = MovieUtils.convertToMovie(jsonObject);
+        Movie result = JsonConverter.convertTo(jsonObject, Movie.class);
 
         // then
         assertEquals(1, result.getId());
@@ -75,7 +63,7 @@ public class MovieUtilsTests {
     @Test
     public void convertToMovies_nullJsonObject_returnsNull() throws JSONException {
         // when
-        List<Movie> result = MovieUtils.convertToMovies(null);
+        List<Movie> result = JsonConverter.convertListTo(null, Movie.class);
 
         // then
         assertEquals(null, result);
@@ -88,11 +76,12 @@ public class MovieUtilsTests {
         JSONObject jsonObject = new JSONObject(json);
 
         // when
-        List<Movie> result = MovieUtils.convertToMovies(jsonObject);
+        List<Movie> result = JsonConverter.convertListTo(jsonObject, Movie.class);
 
         // then
-        assertEquals(2, result.size());
-        assertEquals("movie title", result.get(0).getTitle());
-        assertEquals("movie title 2", result.get(1).getTitle());
+        assertEquals(3, result.size());
+        assertEquals(null, result.get(0).getTitle());
+        assertEquals("movie title", result.get(1).getTitle());
+        assertEquals("movie title 2", result.get(2).getTitle());
     }
 }

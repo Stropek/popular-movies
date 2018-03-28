@@ -2,12 +2,14 @@ package com.example.pscurzytek.popularmovies.services;
 
 import com.example.pscurzytek.popularmovies.BuildConfig;
 import com.example.pscurzytek.popularmovies.models.Movie;
-import com.example.pscurzytek.popularmovies.utils.MovieUtils;
+import com.example.pscurzytek.popularmovies.models.Trailer;
+import com.example.pscurzytek.popularmovies.utils.JsonConverter;
 
 import org.json.JSONObject;
 import java.util.List;
 
 import khttp.KHttp;
+import kotlin.NotImplementedError;
 
 public class MovieService {
     private final String BaseUrl = BuildConfig.MOVIE_DATABASE_BASE_URL;
@@ -19,7 +21,7 @@ public class MovieService {
 
         JSONObject jsonObject = KHttp.get(url).getJsonObject();
 
-        return MovieUtils.convertToMovies(jsonObject);
+        return JsonConverter.convertListTo(jsonObject, Movie.class);
     }
 
     public List<Movie> getTopRated(Integer page) {
@@ -28,6 +30,10 @@ public class MovieService {
 
         JSONObject jsonObject = KHttp.get(url).getJsonObject();
 
-        return MovieUtils.convertToMovies(jsonObject);
+        return JsonConverter.convertListTo(jsonObject, Movie.class);
     }
+
+//    public List<Trailer> getTrailers(Integer movieId) {
+//        throw new NotImplementedError();
+//    }
 }

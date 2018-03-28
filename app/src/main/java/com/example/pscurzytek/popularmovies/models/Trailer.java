@@ -1,6 +1,6 @@
 package com.example.pscurzytek.popularmovies.models;
 
-public class Trailer {
+public class Trailer implements ObjectWithId {
     private final String id;
     private final String key;
     private final String name;
@@ -39,6 +39,11 @@ public class Trailer {
 
     public TrailerType getType() {
         return type;
+    }
+
+    @Override
+    public String getIdAsString() {
+        return id;
     }
 }
 
