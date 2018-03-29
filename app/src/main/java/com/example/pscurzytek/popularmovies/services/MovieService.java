@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import khttp.KHttp;
-import kotlin.NotImplementedError;
 
 public class MovieService {
     private final String BaseUrl = BuildConfig.MOVIE_DATABASE_BASE_URL;
@@ -33,7 +32,11 @@ public class MovieService {
         return JsonConverter.convertListTo(jsonObject, Movie.class);
     }
 
-//    public List<Trailer> getTrailers(Integer movieId) {
-//        throw new NotImplementedError();
-//    }
+    public List<Trailer> getTrailers(int movieId) {
+        String url = String.format("%s/%s/videos?api_key=%s&language=en-US", BaseUrl, movieId, ApiKey);
+
+        JSONObject jsonObject = KHttp.get(url).getJsonObject();
+
+        return JsonConverter.convertListTo(jsonObject, Trailer.class);
+    }
 }
