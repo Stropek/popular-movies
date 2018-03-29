@@ -54,7 +54,7 @@ public class JsonConverterTests {
     @Test
     public void convertToTrailers_validJsonObject_returnsListOfMovies() throws JSONException {
         // given
-        String json = MockResponses.TrailersPageResponse;
+        String json = MockResponses.TrailersListResponse;
         JSONObject jsonObject = new JSONObject(json);
 
         // when

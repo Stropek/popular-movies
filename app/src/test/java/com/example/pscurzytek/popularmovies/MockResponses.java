@@ -12,8 +12,8 @@ class MockResponses {
             "            \"type\": \"Trailer\", \n" +
             "        }";
 
-    final static String TrailersPageResponse = "{\n" +
-            "    \"page\": 1,\n" +
+    final static String TrailersListResponse = "{\n" +
+            "    \"id\": 1,\n" +
             "    \"results\": [\n" +
             "        {\n" +
             "            \"id\": \"1\", \n" +

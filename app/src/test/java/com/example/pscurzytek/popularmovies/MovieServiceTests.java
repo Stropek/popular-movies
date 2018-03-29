@@ -1,6 +1,7 @@
 package com.example.pscurzytek.popularmovies;
 
 import com.example.pscurzytek.popularmovies.models.Movie;
+import com.example.pscurzytek.popularmovies.models.Trailer;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 import com.github.tomakehurst.wiremock.WireMockServer;
 
@@ -32,6 +33,26 @@ public class MovieServiceTests {
         } else {
             assertEquals("https://api.themoviedb.org/3/movie", BuildConfig.MOVIE_DATABASE_BASE_URL);
         }
+    }
+
+    @Test
+    public void getTrailers_validMovieId_returnsListOfTrailers() {
+        // given
+        stubFor(get(urlPathEqualTo("/10/videos"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.TrailersListResponse))
+        );
+
+        MovieService movieService = new MovieService();
+
+        // when
+        List<Trailer> result = movieService.getTrailers(10);
+
+        // then
+        assertEquals(2, result.size());
     }
 
     @Test
