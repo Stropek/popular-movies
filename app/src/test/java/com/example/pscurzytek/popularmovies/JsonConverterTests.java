@@ -2,6 +2,7 @@ package com.example.pscurzytek.popularmovies;
 
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.example.pscurzytek.popularmovies.models.Trailer;
+import com.example.pscurzytek.popularmovies.models.TrailerType;
 import com.example.pscurzytek.popularmovies.utils.JsonConverter;
 
 import org.json.JSONException;
@@ -15,7 +16,7 @@ import static junit.framework.Assert.assertEquals;
 public class JsonConverterTests {
 
     @Test
-    public void convertToTrailer_nullJsonObject_returnsNull() throws JSONException {
+    public void convertToTrailer_nullJsonObject_returnsNull() {
         // when
         Trailer result = JsonConverter.convertTo(null, Trailer.class);
 
@@ -24,7 +25,49 @@ public class JsonConverterTests {
     }
 
     @Test
-    public void convertToMovie_nullJsonObject_returnsNull() throws JSONException {
+    public void convertToTrailer_validJsonObject_returnsNull() throws JSONException {
+        // given
+        String json = MockResponses.SingleTrailerResponse;
+        JSONObject jsonObject = new JSONObject(json);
+
+        // when
+        Trailer result = JsonConverter.convertTo(jsonObject, Trailer.class);
+
+        // then
+        assertEquals("12345", result.getId());
+        assertEquals("key", result.getKey());
+        assertEquals("trailer name", result.getName());
+        assertEquals("YouTube", result.getSite());
+        assertEquals(100, result.getSize());
+        assertEquals(TrailerType.Trailer, result.getType());
+    }
+
+    @Test
+    public void convertToTrailers_nullJsonObject_returnsNull() {
+        // when
+        List<Trailer> result = JsonConverter.convertListTo(null, Trailer.class);
+
+        // then
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void convertToTrailers_validJsonObject_returnsListOfMovies() throws JSONException {
+        // given
+        String json = MockResponses.TrailersPageResponse;
+        JSONObject jsonObject = new JSONObject(json);
+
+        // when
+        List<Trailer> result = JsonConverter.convertListTo(jsonObject, Trailer.class);
+
+        // then
+        assertEquals(2, result.size());
+        assertEquals("trailer 1", result.get(0).getName());
+        assertEquals("trailer 2", result.get(1).getName());
+    }
+
+    @Test
+    public void convertToMovie_nullJsonObject_returnsNull() {
         // when
         Movie result = JsonConverter.convertTo(null, Movie.class);
 
@@ -61,7 +104,7 @@ public class JsonConverterTests {
     }
 
     @Test
-    public void convertToMovies_nullJsonObject_returnsNull() throws JSONException {
+    public void convertToMovies_nullJsonObject_returnsNull() {
         // when
         List<Movie> result = JsonConverter.convertListTo(null, Movie.class);
 

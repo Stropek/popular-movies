@@ -1,9 +1,42 @@
 package com.example.pscurzytek.popularmovies;
 
 class MockResponses {
-    final static String InvalidIdSingleMovieResponse = "{\n" +
-            "            \"id\": 0\n" +
+    final static String SingleTrailerResponse = "{\n" +
+            "            \"id\": \"12345\", \n" +
+            "            \"iso_639_1\": \"en\", \n" +
+            "            \"iso_3166_1\": \"US\", \n" +
+            "            \"key\": \"key\",\n" +
+            "            \"name\": \"trailer name\", \n" +
+            "            \"site\": \"YouTube\", \n" +
+            "            \"size\": 100, \n" +
+            "            \"type\": \"Trailer\", \n" +
             "        }";
+
+    final static String TrailersPageResponse = "{\n" +
+            "    \"page\": 1,\n" +
+            "    \"results\": [\n" +
+            "        {\n" +
+            "            \"id\": \"1\", \n" +
+            "            \"iso_639_1\": \"en\", \n" +
+            "            \"iso_3166_1\": \"US\", \n" +
+            "            \"key\": \"key\"," +
+            "            \"name\": \"trailer 1\", \n" +
+            "            \"site\": \"YouTube\", \n" +
+            "            \"size\": 100, \n" +
+            "            \"type\": \"Trailer\", \n" +
+            "        }, \n" +
+            "        {\n" +
+            "            \"id\": \"2\", \n" +
+            "            \"iso_639_1\": \"en\", \n" +
+            "            \"iso_3166_1\": \"US\", \n" +
+            "            \"key\": \"key\"," +
+            "            \"name\": \"trailer 2\", \n" +
+            "            \"site\": \"YouTube\", \n" +
+            "            \"size\": 200, \n" +
+            "            \"type\": \"Trailer\", \n" +
+            "        } \n" +
+            "       ],\n" +
+            " }";
 
     final static String SingleMovieResponse = "{\n" +
             "            \"vote_count\": 10,\n" +
@@ -70,7 +103,7 @@ class MockResponses {
             "            \"adult\": false,\n" +
             "            \"overview\": \"movie overview 2\",\n" +
             "            \"release_date\": \"2000-10-20\"\n" +
-            "        }" +
+            "        }\n" +
             "       ],\n" +
             " }";
 }
