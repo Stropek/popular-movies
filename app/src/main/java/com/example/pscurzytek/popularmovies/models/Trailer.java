@@ -5,10 +5,10 @@ public class Trailer implements ObjectWithId {
     private final String key;
     private final String name;
     private final String site;
-    private final Integer size;
+    private final int size;
     private final TrailerType type;
 
-    public Trailer(String id, String key, String name, String site, Integer size, TrailerType type) {
+    public Trailer(String id, String key, String name, String site, int size, TrailerType type) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -33,7 +33,7 @@ public class Trailer implements ObjectWithId {
         return site;
     }
 
-    public Integer getSize() {
+    public int getSize() {
         return size;
     }
 

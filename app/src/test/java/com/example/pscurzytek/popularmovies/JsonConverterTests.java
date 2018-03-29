@@ -1,8 +1,6 @@
 package com.example.pscurzytek.popularmovies;
 
-import com.example.pscurzytek.popularmovies.models.Movie;
-import com.example.pscurzytek.popularmovies.models.Trailer;
-import com.example.pscurzytek.popularmovies.models.TrailerType;
+import com.example.pscurzytek.popularmovies.models.*;
 import com.example.pscurzytek.popularmovies.utils.JsonConverter;
 
 import org.json.JSONException;
@@ -14,6 +12,54 @@ import java.util.List;
 import static junit.framework.Assert.assertEquals;
 
 public class JsonConverterTests {
+    @Test
+    public void convertToReview_nullJsonObject_returnsNull() {
+        // when
+        Review result = JsonConverter.convertTo(null, Review.class);
+
+        // then
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void convertToReview_validJsonObject_returnsNull() throws JSONException {
+        // given
+        String json = MockResponses.SingleReviewResponse;
+        JSONObject jsonObject = new JSONObject(json);
+
+        // when
+        Review result = JsonConverter.convertTo(jsonObject, Review.class);
+
+        // then
+        assertEquals("12345", result.getId());
+        assertEquals("review author", result.getAuthor());
+        assertEquals("review content", result.getContent());
+        assertEquals("review url", result.getUrl());
+    }
+
+    @Test
+    public void convertToReviews_nullJsonObject_returnsNull() {
+        // when
+        List<Review> result = JsonConverter.convertListTo(null, Review.class);
+
+        // then
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void convertToReviews_validJsonObject_returnsListOfReviews() throws JSONException {
+        // given
+        String json = MockResponses.ReviewsPageResponse;
+        JSONObject jsonObject = new JSONObject(json);
+
+        // when
+        List<Review> result = JsonConverter.convertListTo(jsonObject, Review.class);
+
+        // then
+        assertEquals(2, result.size());
+        assertEquals("review 1 author", result.get(0).getAuthor());
+        assertEquals("review 2 author", result.get(1).getAuthor());
+    }
 
     @Test
     public void convertToTrailer_nullJsonObject_returnsNull() {
@@ -52,7 +98,7 @@ public class JsonConverterTests {
     }
 
     @Test
-    public void convertToTrailers_validJsonObject_returnsListOfMovies() throws JSONException {
+    public void convertToTrailers_validJsonObject_returnsListOfTrailers() throws JSONException {
         // given
         String json = MockResponses.TrailersListResponse;
         JSONObject jsonObject = new JSONObject(json);

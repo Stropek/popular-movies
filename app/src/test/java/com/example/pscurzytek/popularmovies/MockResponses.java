@@ -1,6 +1,33 @@
 package com.example.pscurzytek.popularmovies;
 
 class MockResponses {
+    final static String SingleReviewResponse = "{\n" +
+            "            \"id\": \"12345\", \n" +
+            "            \"author\": \"review author\", \n" +
+            "            \"content\": \"review content\", \n" +
+            "            \"url\": \"review url\", \n" +
+            "        }";
+
+    final static String ReviewsPageResponse = "{\n" +
+            "    \"page\": 1,\n" +
+            "    \"total_results\": 100,\n" +
+            "    \"total_pages\": 10,\n" +
+            "    \"results\": [\n" +
+            "        {\n" +
+            "            \"id\": \"1\",\n" +
+            "            \"author\": \"review 1 author\", \n" +
+            "            \"content\": \"review 1 content\", \n" +
+            "            \"url\": \"review 1 url\", \n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": \"2\",\n" +
+            "            \"author\": \"review 2 author\", \n" +
+            "            \"content\": \"review 2 content\", \n" +
+            "            \"url\": \"review 2 url\", \n" +
+            "        }\n" +
+            "       ],\n" +
+            " }";
+
     final static String SingleTrailerResponse = "{\n" +
             "            \"id\": \"12345\", \n" +
             "            \"iso_639_1\": \"en\", \n" +

@@ -1,6 +1,7 @@
 package com.example.pscurzytek.popularmovies;
 
 import com.example.pscurzytek.popularmovies.models.Movie;
+import com.example.pscurzytek.popularmovies.models.Review;
 import com.example.pscurzytek.popularmovies.models.Trailer;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -50,6 +51,46 @@ public class MovieServiceTests {
 
         // when
         List<Trailer> result = movieService.getTrailers(10);
+
+        // then
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void getReviews_returnsListOfReviews() {
+        // given
+        stubFor(get(urlPathEqualTo("/10/reviews"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.ReviewsPageResponse)));
+
+        MovieService movieService = new MovieService();
+
+        // when
+        List<Review> result = movieService.getReviews(10,null);
+
+        // then
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void getPopular_pageProvided_returnsListOfReviews() {
+        // given
+        stubFor(get(urlPathEqualTo("/10/reviews"))
+                .withQueryParam("api_key", equalTo("1234567890"))
+                .withQueryParam("language", equalTo("en-US"))
+                .withQueryParam("page", equalTo("3"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(MockResponses.ReviewsPageResponse)));
+
+        MovieService movieService = new MovieService();
+
+        // when
+        List<Review> result = movieService.getReviews(10,3);
 
         // then
         assertEquals(2, result.size());
