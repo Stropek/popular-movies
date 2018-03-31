@@ -2,7 +2,14 @@ package com.example.pscurzytek.popularmovies.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +18,16 @@ import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
+import com.example.pscurzytek.popularmovies.adapters.TabFragmentPagerAdapter;
 import com.example.pscurzytek.popularmovies.models.Movie;
+import com.example.pscurzytek.popularmovies.models.Trailer;
 import com.squareup.picasso.Picasso;
 
-public class MovieDetailsFragment extends Fragment {
+import java.util.List;
+
+public class MovieDetailsFragment extends Fragment
+//        implements LoaderManager.LoaderCallbacks<List<Trailer>>
+{
 
     private Movie movie;
     private Activity activity;
@@ -29,8 +42,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
         TextView titleTextView = view.findViewById(R.id.title_tv);
@@ -49,6 +61,28 @@ public class MovieDetailsFragment extends Fragment {
             Picasso.with(activity).load(movie.getFullPosterPath()).into(posterImageView);
         }
 
+        ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
+        viewPager.setAdapter(new TabFragmentPagerAdapter(getFragmentManager(), activity));
+
+        TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
         return view;
     }
+
+//    @NonNull
+//    @Override
+//    public Loader<List<Trailer>> onCreateLoader(int id, @Nullable Bundle args) {
+//        return new TrailerLoader(activity, movieService);
+//    }
+//
+//    @Override
+//    public void onLoadFinished(@NonNull Loader<List<Trailer>> loader, List<Trailer> data) {
+//
+//    }
+//
+//    @Override
+//    public void onLoaderReset(@NonNull Loader<List<Trailer>> loader) {
+//
+//    }
 }
