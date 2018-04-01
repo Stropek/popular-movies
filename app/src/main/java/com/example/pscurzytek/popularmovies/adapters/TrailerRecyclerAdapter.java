@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.models.Trailer;
@@ -33,6 +34,11 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
     public void onBindViewHolder(ViewHolder holder, int position) {
         List<Trailer> trailers = this.trailers;
 
+        if (trailers.size() - 1 >= position) {
+            Trailer trailer = trailers.get(position);
+
+            holder.trailerName.setText(trailer.getName());
+        }
     }
 
     @Override
@@ -50,9 +56,12 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        TextView trailerName;
 
         ViewHolder(View itemView) {
             super(itemView);
+
+            trailerName = itemView.findViewById(R.id.trailer_name_tv);
         }
     }
 }
