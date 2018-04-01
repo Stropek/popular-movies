@@ -62,7 +62,7 @@ public class MovieDetailsFragment extends Fragment
         }
 
         ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
-        viewPager.setAdapter(new TabFragmentPagerAdapter(getFragmentManager(), activity));
+        viewPager.setAdapter(new TabFragmentPagerAdapter(getFragmentManager(), activity, movie.getId()));
 
         TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
         tabLayout.setupWithViewPager(viewPager);

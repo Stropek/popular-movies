@@ -12,9 +12,9 @@ import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
-public class MovieAdapter extends ArrayAdapter<Movie> {
+public class MovieArrayAdapter extends ArrayAdapter<Movie> {
 
-    public MovieAdapter(@NonNull Context context) {
+    public MovieArrayAdapter(@NonNull Context context) {
         super(context, 0);
     }
 

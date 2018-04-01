@@ -10,7 +10,6 @@ import com.example.pscurzytek.popularmovies.enums.SortOrder;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
