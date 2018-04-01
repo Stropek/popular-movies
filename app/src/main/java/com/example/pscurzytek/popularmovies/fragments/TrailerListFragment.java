@@ -59,7 +59,7 @@ public class TrailerListFragment extends Fragment
         PopularMoviesApp app = (PopularMoviesApp) activity.getApplication();
         app.appComponent.inject(this);
 
-        trailerRecyclerAdapter = new TrailerRecyclerAdapter();
+        trailerRecyclerAdapter = new TrailerRecyclerAdapter(activity);
 
         Bundle arguments = getArguments();
         mPage = arguments.getInt(ARG_PAGE);
