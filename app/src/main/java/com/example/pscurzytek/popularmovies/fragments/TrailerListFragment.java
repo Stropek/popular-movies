@@ -81,6 +81,15 @@ public class TrailerListFragment extends Fragment
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+//        if (isAdded()) {
+//            getLoaderManager().destroyLoader(TRAILER_LOADER_ID);
+//            getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+//        }
+    }
+
+    @Override
     public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
         return new TrailerLoader(activity, movieService, movieId);
     }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment;
-import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 import com.example.pscurzytek.popularmovies.models.Movie;
 
 public class MovieDetailsActivity extends AppCompatActivity {
