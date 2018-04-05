@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.pscurzytek.popularmovies.fragments.ReviewListFragment;
 import com.example.pscurzytek.popularmovies.fragments.TrailerListFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -22,7 +23,12 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return TrailerListFragment.newInstance(position, movieId);
+        switch (position) {
+            case 0: return TrailerListFragment.newInstance(movieId);
+            case 1: return ReviewListFragment.newInstance(movieId);
+        }
+
+        return null;
     }
 
     @Override
@@ -33,10 +39,5 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];
-    }
-
-    @Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
     }
 }

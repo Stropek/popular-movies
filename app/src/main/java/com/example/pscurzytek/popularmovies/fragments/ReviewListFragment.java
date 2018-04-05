@@ -14,52 +14,51 @@ import android.view.ViewGroup;
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
-import com.example.pscurzytek.popularmovies.adapters.TrailerRecyclerAdapter;
-import com.example.pscurzytek.popularmovies.loaders.TrailerLoader;
-import com.example.pscurzytek.popularmovies.models.Trailer;
+import com.example.pscurzytek.popularmovies.adapters.ReviewRecyclerAdapter;
+import com.example.pscurzytek.popularmovies.loaders.ReviewLoader;
+import com.example.pscurzytek.popularmovies.models.Review;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class TrailerListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Trailer>> {
+public class ReviewListFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<List<Review>> {
 
     @Inject
     public MovieService movieService;
-
-    private static final int TRAILER_LOADER_ID = 2;
+    private static final int REVIEW_LOADER_ID = 3;
 
     private int movieId;
 
     private Activity activity;
-    private TrailerRecyclerAdapter trailerRecyclerAdapter;
+    private ReviewRecyclerAdapter reviewRecyclerAdapter;
 
-    public static TrailerListFragment newInstance(int movieId) {
+    public static ReviewListFragment newInstance(int movieId) {
         Bundle args = new Bundle();
 
         args.putInt(Constants.BundleKeys.MovieId, movieId);
 
-        TrailerListFragment fragment = new TrailerListFragment();
+        ReviewListFragment fragment = new ReviewListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);activity = getActivity();
         activity = getActivity();
 
         PopularMoviesApp app = (PopularMoviesApp) activity.getApplication();
         app.appComponent.inject(this);
 
-        trailerRecyclerAdapter = new TrailerRecyclerAdapter(activity);
+        reviewRecyclerAdapter = new ReviewRecyclerAdapter(activity);
 
         Bundle arguments = getArguments();
         movieId = arguments.getInt(Constants.BundleKeys.MovieId);
 
-        getLoaderManager().initLoader(TRAILER_LOADER_ID, null, this);
+        getLoaderManager().initLoader(REVIEW_LOADER_ID, null, this);
     }
 
     @Override
@@ -69,23 +68,23 @@ public class TrailerListFragment extends Fragment
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(trailerRecyclerAdapter);
+        recyclerView.setAdapter(reviewRecyclerAdapter);
 
         return view;
     }
 
     @Override
-    public Loader<List<Trailer>> onCreateLoader(int id, Bundle args) {
-        return new TrailerLoader(activity, movieService, movieId);
+    public Loader<List<Review>> onCreateLoader(int id, Bundle args) {
+        return new ReviewLoader(activity, movieService, movieId);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Trailer>> loader, List<Trailer> data) {
-        trailerRecyclerAdapter.swapData(data);
+    public void onLoadFinished(Loader<List<Review>> loader, List<Review> data) {
+        reviewRecyclerAdapter.swapData(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Trailer>> loader) {
-        trailerRecyclerAdapter.swapData(null);
+    public void onLoaderReset(Loader<List<Review>> loader) {
+        reviewRecyclerAdapter.swapData(null);
     }
 }
