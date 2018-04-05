@@ -38,6 +38,7 @@ public class ReviewRecyclerAdapter extends RecyclerView.Adapter<ReviewRecyclerAd
             Review review = reviews.get(position);
 
             holder.reviewAuthor.setText(review.getAuthor());
+            holder.reviewContent.setText(review.getContent());
         }
     }
 
@@ -57,11 +58,13 @@ public class ReviewRecyclerAdapter extends RecyclerView.Adapter<ReviewRecyclerAd
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView reviewAuthor;
+        TextView reviewContent;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             reviewAuthor = itemView.findViewById(R.id.author_tv);
+            reviewContent = itemView.findViewById(R.id.content_tv);
         }
     }
 }

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
@@ -76,6 +77,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Boolean isBigScreen() {
         return isBigScreen;
+    }
+
+    public void onReviewClicked(View view) {
+        // TODO: toggle max lines for clicked view
     }
 
     private void loadMainFragments() {
