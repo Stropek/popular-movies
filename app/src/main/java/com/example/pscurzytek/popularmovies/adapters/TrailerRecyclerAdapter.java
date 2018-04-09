@@ -1,10 +1,14 @@
 package com.example.pscurzytek.popularmovies.adapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.R;
@@ -35,9 +39,24 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
         List<Trailer> trailers = this.trailers;
 
         if (trailers.size() - 1 >= position) {
-            Trailer trailer = trailers.get(position);
+            final Trailer trailer = trailers.get(position);
 
             holder.trailerName.setText(trailer.getName());
+            holder.playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String id = trailer.getKey();
+
+                    Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://www.youtube.com/watch?v=" + id));
+                    try {
+                        context.startActivity(appIntent);
+                    } catch (ActivityNotFoundException ex) {
+                        context.startActivity(webIntent);
+                    }
+                }
+            });
         }
     }
 
@@ -57,11 +76,13 @@ public class TrailerRecyclerAdapter extends RecyclerView.Adapter<TrailerRecycler
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView trailerName;
+        ImageView playButton;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             trailerName = itemView.findViewById(R.id.trailer_name_tv);
+            playButton = itemView.findViewById(R.id.play_ib);
         }
     }
 }
