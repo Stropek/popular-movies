@@ -5,11 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment;
-import com.example.pscurzytek.popularmovies.fragments.MovieListFragment;
 import com.example.pscurzytek.popularmovies.models.Movie;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -25,6 +26,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
         handler = new Handler();
 
         loadDetailsFragments();
+    }
+
+    public void onReviewClicked(View view) {
+        TextView content = view.findViewById(R.id.content_tv);
+        if (content.getMaxLines() == 2) {
+            content.setMaxLines(Integer.MAX_VALUE);
+        } else {
+            content.setMaxLines(2);
+        }
     }
 
     private void loadDetailsFragments() {

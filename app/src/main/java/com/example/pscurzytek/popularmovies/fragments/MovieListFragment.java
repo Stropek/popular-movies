@@ -17,7 +17,7 @@ import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.activities.MovieDetailsActivity;
-import com.example.pscurzytek.popularmovies.adapters.MovieAdapter;
+import com.example.pscurzytek.popularmovies.adapters.MovieArrayAdapter;
 import com.example.pscurzytek.popularmovies.enums.SortOrder;
 import com.example.pscurzytek.popularmovies.loaders.MovieLoader;
 import com.example.pscurzytek.popularmovies.models.Movie;
@@ -37,7 +37,7 @@ public class MovieListFragment extends Fragment
     private SortOrder sortOrder = SortOrder.MostPopular;
 
     private Activity activity;
-    private MovieAdapter movieAdapter;
+    private MovieArrayAdapter movieArrayAdapter;
 
     private OnMoviesLoadedListener moviesLoadedListener;
     private OnMovieSelectedListener movieSelectedListener;
@@ -50,7 +50,7 @@ public class MovieListFragment extends Fragment
         PopularMoviesApp app = (PopularMoviesApp) activity.getApplication();
         app.appComponent.inject(this);
 
-        movieAdapter = new MovieAdapter(activity);
+        movieArrayAdapter = new MovieArrayAdapter(activity);
 
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -66,7 +66,7 @@ public class MovieListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         final GridView thumbnails = view.findViewById(R.id.thumbnails_grid);
-        thumbnails.setAdapter(movieAdapter);
+        thumbnails.setAdapter(movieArrayAdapter);
         thumbnails.setClickable(true);
         thumbnails.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,8 +94,8 @@ public class MovieListFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        movieAdapter.clear();
-        movieAdapter.addAll(data);
+        movieArrayAdapter.clear();
+        movieArrayAdapter.addAll(data);
         if (data.size() > 0) {
             moviesLoadedListener.onMoviesLoaded(data.get(0));
         }
@@ -103,7 +103,7 @@ public class MovieListFragment extends Fragment
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> loader) {
-        movieAdapter.clear();
+        movieArrayAdapter.clear();
     }
 
     @Override

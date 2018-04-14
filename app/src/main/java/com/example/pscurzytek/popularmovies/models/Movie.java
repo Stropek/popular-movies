@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class Movie implements Serializable {
+public class Movie implements Serializable, ObjectWithId {
     private static final String basePosterPath = "http://image.tmdb.org/t/p/w185";
 
     private final int id;
@@ -109,5 +109,10 @@ public class Movie implements Serializable {
 
     public List<Integer> getGenreIds() {
         return genreIds;
+    }
+
+    @Override
+    public String getIdAsString() {
+        return String.format("%s", id);
     }
 }

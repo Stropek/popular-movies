@@ -2,7 +2,9 @@ package com.example.pscurzytek.popularmovies.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,12 @@ import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
+import com.example.pscurzytek.popularmovies.adapters.TabFragmentPagerAdapter;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
-public class MovieDetailsFragment extends Fragment {
+public class MovieDetailsFragment extends Fragment
+{
 
     private Movie movie;
     private Activity activity;
@@ -29,8 +33,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
         TextView titleTextView = view.findViewById(R.id.title_tv);
@@ -48,6 +51,12 @@ public class MovieDetailsFragment extends Fragment {
 
             Picasso.with(activity).load(movie.getFullPosterPath()).into(posterImageView);
         }
+
+        ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
+        viewPager.setAdapter(new TabFragmentPagerAdapter(getChildFragmentManager(), activity, movie.getId()));
+
+        TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         return view;
     }
