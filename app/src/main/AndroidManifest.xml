@@ -24,6 +24,12 @@
         <activity android:name=".activities.MovieDetailsActivity"
             android:label="@string/activity_details"
             android:parentActivityName=".activities.MainActivity" />
+
+        <provider
+            android:name=".data.MovieDataProvider"
+            android:authorities="com.example.pscurzytek.popularmovies"
+            android:exported="false" />
+
     </application>
 
 </manifest>
