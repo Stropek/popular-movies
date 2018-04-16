@@ -1,6 +1,5 @@
-package com.example.pscurzytek.popularmovies.espresso;
+package com.example.pscurzytek.popularmovies.utils;
 
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;

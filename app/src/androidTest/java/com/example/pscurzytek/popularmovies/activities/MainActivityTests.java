@@ -28,7 +28,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static com.example.pscurzytek.popularmovies.espresso.MovieMatchers.*;
+import static com.example.pscurzytek.popularmovies.utils.MovieMatchers.*;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 

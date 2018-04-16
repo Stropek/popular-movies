@@ -1,10 +1,16 @@
 package com.example.pscurzytek.popularmovies.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class MovieContract {
+    public static final String AUTHORITY = "com.example.pscurzytek.popularmovies";
+    public static Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    public static final String PATH_MOVIES = "movies";
 
     public static final class MovieEntry implements BaseColumns {
+
         public static final String TABLE_NAME = "movies";
 
         public static final String COLUMN_TITLE = "title";
