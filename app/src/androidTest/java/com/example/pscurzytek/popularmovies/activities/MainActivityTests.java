@@ -9,6 +9,8 @@ import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.TestAppComponent;
 import com.example.pscurzytek.popularmovies.models.Movie;
+import com.example.pscurzytek.popularmovies.models.Trailer;
+import com.example.pscurzytek.popularmovies.models.TrailerType;
 import com.example.pscurzytek.popularmovies.services.MovieService;
 import com.example.pscurzytek.popularmovies.services.TestMovieServiceModule;
 
@@ -85,9 +87,10 @@ public class MainActivityTests {
     }
 
     @Test
-    public void clickThumbnail_displaysMovieDetails() {
+    public void clickThumbnail_displaysMovieDetailsAndTrailers() {
         // given
         when(movieService.getPopular(null)).thenReturn(createMovies(1));
+        when(movieService.getTrailers(1)).thenReturn(createTrailers(2));
 
         testRule.launchActivity(null);
 
@@ -96,6 +99,27 @@ public class MainActivityTests {
 
         // then
         onView(withText("Movie details"));
+        onView(withText(R.id.trailer_name_tv));
+    }
+
+    // TODO: write a test to verify reviews
+
+    private Trailer createTrailer(int id) {
+        String key = String.format("key %s", id);
+        String name = String.format("name %s", id);
+        String site = String.format("site %s", id);
+
+        return new Trailer(String.format("%s", id), key, name, site, 1, TrailerType.Trailer);
+    }
+
+    private List<Trailer> createTrailers(int count) {
+        List<Trailer> trailers = new ArrayList<>();
+
+        for (int i = 1; i < count + 1; i++) {
+            trailers.add(createTrailer(i));
+        }
+
+        return trailers;
     }
 
     private Movie createMovie(int id, String posterPath) {
