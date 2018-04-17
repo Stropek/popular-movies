@@ -2,16 +2,18 @@ package com.example.pscurzytek.popularmovies.data;
 
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.database.ContentObserver;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.pscurzytek.popularmovies.utils.TestUtilities;
+import com.example.pscurzytek.popularmovies.utils.TestContentObserver;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,13 +54,61 @@ public class MovieDataProviderTests {
     }
 
     @Test(expected = UnsupportedOperationException.class)
+    public void insert_with_unknown_uri_should_throw_unsupported_operation_exception() {
+        // given
+        Uri unknownUri = MovieContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
+        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
+
+        // when
+        _context.getContentResolver().insert(unknownUri, new ContentValues());
+    }
+    @Test
+    public void insert_to_movies_with_valid_parameters_should_succeed() {
+        // given
+        ContentResolver contentResolver = _context.getContentResolver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+
+        // when
+        Uri expectedUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath("1").build();
+        Uri actualUri = insertMovie(contentResolver, uri, "test title");
+
+        // then
+        assertEquals("Unable to insert item through provider", expectedUri, actualUri);
+
+        contentObserver.waitForNotificationOrFail();
+        contentResolver.unregisterContentObserver(contentObserver);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
     public void query_with_unknown_uri_should_throw_unsupported_operation_exception() {
         // given
         Uri unknownUri = MovieContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
-        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestUtilities.getTestContentObserver());
+        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
 
         // when
         _context.getContentResolver().query(unknownUri, null, null, null, null);
+    }
+    @Test
+    public void query_with_movies_content_uri_returns_all_movies() {
+        // given
+        ContentResolver contentResolver = _context.getContentResolver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri moviesUri = MovieContract.MovieEntry.CONTENT_URI;
+
+        setObservedUriOnContentResolver(contentResolver, moviesUri, contentObserver);
+
+        for (int i = 0; i < 10; i++) {
+            insertMovie(contentResolver, moviesUri, "movie " + i);
+        }
+
+        // when
+        Cursor movies = contentResolver.query(moviesUri, null, null, null, null);
+
+        // then
+        assertEquals("Unexpected number of movies", movies.getCount(), 10);
     }
 
     private void setObservedUriOnContentResolver(ContentResolver contentResolver, Uri uri, ContentObserver contentObserver) {
@@ -69,5 +119,12 @@ public class MovieDataProviderTests {
                 true,
                 /* The observer to register (that will receive notifyChange callbacks) */
                 contentObserver);
+    }
+
+    private Uri insertMovie(ContentResolver contentResolver, Uri uri, String title) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
+
+        return contentResolver.insert(uri, contentValues);
     }
 }

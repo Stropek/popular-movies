@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -12,14 +13,17 @@ import android.support.annotation.Nullable;
 
 public class MovieDataProvider extends ContentProvider {
 
-    private static MovieDbHelper _db = null;
+    private Context _context;
+
+    private static MovieDbHelper _db;
     private static UriMatcher _uriMatcher = buildUriMatcher();
 
     private static final int MOVIE_ENTRIES = 100;
 
     @Override
     public boolean onCreate() {
-        _db = new MovieDbHelper(getContext());
+        _context = getContext();
+        _db = new MovieDbHelper(_context);
         return true;
     }
 
@@ -44,9 +48,8 @@ public class MovieDataProvider extends ContentProvider {
         }
 
         if (cursor != null) {
-            Context context = getContext();
-            if (context != null) {
-                cursor.setNotificationUri(context.getContentResolver(), uri);
+            if (_context != null) {
+                cursor.setNotificationUri(_context.getContentResolver(), uri);
             }
         }
         return cursor;
@@ -61,7 +64,24 @@ public class MovieDataProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        Uri returnUri;
+        SQLiteDatabase db = _db.getWritableDatabase();
+
+        switch (_uriMatcher.match(uri)) {
+            case MOVIE_ENTRIES:
+                long movieId = db.insert(MovieContract.MovieEntry.TABLE_NAME, null, values);
+                if (movieId > -1) {
+                    returnUri = uri.buildUpon().appendPath(String.format("%s", movieId)).build();
+                } else {
+                    throw new SQLException("Failed to insert a new movie into: " + uri);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown operation URI: " + uri);
+        }
+
+        _context.getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override

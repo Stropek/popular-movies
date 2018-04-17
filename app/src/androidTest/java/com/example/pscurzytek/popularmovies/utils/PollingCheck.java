@@ -7,8 +7,9 @@ import java.util.concurrent.Callable;
 import kotlin.jvm.Throws;
 
 abstract class PollingCheck {
-    private Long _timeout = 3000L;
-    private static Long TIME_SLICE = 50L;
+
+    private static final Long TIME_SLICE = 50L;
+    private Long _timeout;
 
     PollingCheck(Long timeout) {
         _timeout = timeout;
