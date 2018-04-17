@@ -175,6 +175,4 @@ public class MovieServiceTests {
         // then
         assertEquals(3, result.size());
     }
-
-
 }

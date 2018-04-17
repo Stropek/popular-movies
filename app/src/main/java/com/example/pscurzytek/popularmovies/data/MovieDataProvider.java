@@ -19,6 +19,7 @@ public class MovieDataProvider extends ContentProvider {
     private static UriMatcher _uriMatcher = buildUriMatcher();
 
     private static final int MOVIE_ENTRIES = 100;
+    private static final int MOVIE_ENTRY_WITH_ID = 101;
 
     @Override
     public boolean onCreate() {
@@ -57,12 +58,6 @@ public class MovieDataProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(@NonNull Uri uri) {
-        return null;
-    }
-
-    @Nullable
-    @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         Uri returnUri;
         SQLiteDatabase db = _db.getWritableDatabase();
@@ -86,7 +81,19 @@ public class MovieDataProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int deleted;
+        SQLiteDatabase db = _db.getWritableDatabase();
+
+        switch (_uriMatcher.match(uri)) {
+            case MOVIE_ENTRY_WITH_ID:
+                String id = uri.getLastPathSegment();
+                deleted = db.delete(MovieContract.MovieEntry.TABLE_NAME, MovieContract.MovieEntry._ID + "=?", new String[] {id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown operation URI: " + uri);
+        }
+
+        return deleted;
     }
 
     @Override
@@ -94,10 +101,17 @@ public class MovieDataProvider extends ContentProvider {
         return 0;
     }
 
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        return null;
+    }
+
     private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIES, MOVIE_ENTRIES);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_MOVIES + "/#", MOVIE_ENTRY_WITH_ID);
 
         return uriMatcher;
     }

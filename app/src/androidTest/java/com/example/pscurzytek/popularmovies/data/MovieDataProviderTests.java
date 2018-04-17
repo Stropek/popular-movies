@@ -72,7 +72,7 @@ public class MovieDataProviderTests {
         setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         // when
-        Uri expectedUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath("1").build();
+        Uri expectedUri = uri.buildUpon().appendPath("1").build();
         Uri actualUri = insertMovie(contentResolver, uri, "test title");
 
         // then
@@ -96,19 +96,49 @@ public class MovieDataProviderTests {
         // given
         ContentResolver contentResolver = _context.getContentResolver();
         ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
-        Uri moviesUri = MovieContract.MovieEntry.CONTENT_URI;
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
 
-        setObservedUriOnContentResolver(contentResolver, moviesUri, contentObserver);
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
 
         for (int i = 0; i < 10; i++) {
-            insertMovie(contentResolver, moviesUri, "movie " + i);
+            insertMovie(contentResolver, uri, "movie " + i);
         }
 
         // when
-        Cursor movies = contentResolver.query(moviesUri, null, null, null, null);
+        Cursor movies = contentResolver.query(uri, null, null, null, null);
 
         // then
         assertEquals("Unexpected number of movies", movies.getCount(), 10);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void delete_with_unknown_uri_should_throw_unsupported_operation_exception() {
+        // given
+        Uri unknownUri = MovieContract.BASE_CONTENT_URI.buildUpon().appendPath("unknown").build();
+        setObservedUriOnContentResolver(_context.getContentResolver(), unknownUri, TestContentObserver.getTestContentObserver());
+
+        // when
+        _context.getContentResolver().delete(unknownUri, null, null);
+    }
+    @Test
+    public void delete_from_movies_with_existing_id_should_succeed() {
+        // given
+        ContentResolver contentResolver = _context.getContentResolver();
+        TestContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+        Uri existingUri = uri.buildUpon().appendPath("1").build();
+
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+
+        insertMovie(contentResolver, uri, "test movie");
+
+        // when
+        int deleted = contentResolver.delete(existingUri, null, null);
+
+        // then
+        assertEquals(1, deleted);
+        Cursor movies = contentResolver.query(uri, null, null, null, null);
+        assertEquals(0, movies.getCount());
     }
 
     private void setObservedUriOnContentResolver(ContentResolver contentResolver, Uri uri, ContentObserver contentObserver) {
