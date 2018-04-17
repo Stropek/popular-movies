@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment">
 
+    <!--TODO: add a button to mark movie as favorite -->
+
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="match_parent"

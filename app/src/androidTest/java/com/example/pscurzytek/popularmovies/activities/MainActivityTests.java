@@ -9,6 +9,7 @@ import com.example.pscurzytek.popularmovies.PopularMoviesApp;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.TestAppComponent;
 import com.example.pscurzytek.popularmovies.models.Movie;
+import com.example.pscurzytek.popularmovies.models.Review;
 import com.example.pscurzytek.popularmovies.models.Trailer;
 import com.example.pscurzytek.popularmovies.models.TrailerType;
 import com.example.pscurzytek.popularmovies.services.MovieService;
@@ -31,6 +32,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static com.example.pscurzytek.popularmovies.utils.MovieMatchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 
@@ -90,7 +92,7 @@ public class MainActivityTests {
     public void clickThumbnail_displaysMovieDetailsAndTrailers() {
         // given
         when(movieService.getPopular(null)).thenReturn(createMovies(1));
-        when(movieService.getTrailers(1)).thenReturn(createTrailers(2));
+        when(movieService.getTrailers(1)).thenReturn(createTrailers(1));
 
         testRule.launchActivity(null);
 
@@ -98,18 +100,66 @@ public class MainActivityTests {
         onData(withMovieId(1)).perform(click());
 
         // then
-        onView(withText("Movie details"));
-        onView(withText(R.id.trailer_name_tv));
+        onView(withId(R.id.trailer_item)).check(matches(isDisplayed()));
     }
 
-    // TODO: write a test to verify reviews
+    // TODO: click on a trailer and check if YT intend is fired up
+//    @Test
+//    public void clickThumbnail_thenClickPlayOnFirstTrailer_playsYouTubeVideo() {
+//        // given
+//        when(movieService.getPopular(null)).thenReturn(createMovies(1));
+//        when(movieService.getTrailers(1)).thenReturn(createTrailers(2));
+//
+//        testRule.launchActivity(null);
+//        onData(withMovieId(1)).perform(click());
+//
+//        // when
+//
+//        // then
+//    }
 
-    private Trailer createTrailer(int id) {
-        String key = String.format("key %s", id);
-        String name = String.format("name %s", id);
-        String site = String.format("site %s", id);
+    @Test
+    public void clickThumbnail_thenClickReviews_displaysMovieDetailsAndReviews() {
+        // given
+        when(movieService.getPopular(null)).thenReturn(createMovies(1));
+        when(movieService.getReviews(1, null)).thenReturn(createReviews(1));
 
-        return new Trailer(String.format("%s", id), key, name, site, 1, TrailerType.Trailer);
+        testRule.launchActivity(null);
+
+        // when
+        onData(withMovieId(1)).perform(click());
+        onView(allOf(withText("Reviews"), isDescendantOfA(withId(R.id.movie_details_tabs)))).perform(click());
+
+        // then
+        onView(withId(R.id.review_item)).check(matches(isDisplayed()));
+    }
+
+    private Review createReview(int movieId) {
+        String id = String.format("%s", movieId);
+        String author = String.format("test author %s", movieId);
+        String content = String.format("test content %s", movieId);
+        String uri = String.format("test uri %s", movieId);
+
+        return new Review(id, author, content, uri);
+    }
+
+    private List<Review> createReviews(int count) {
+        List<Review> reviews = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            reviews.add(createReview(i));
+        }
+
+        return reviews;
+    }
+
+    private Trailer createTrailer(int movieId) {
+        String id = String.format("%s", movieId);
+        String key = "P82hy5PDjdw";
+        String name = String.format("name %s", movieId);
+        String site = String.format("site %s", movieId);
+
+        return new Trailer(id, key, name, site, 1, TrailerType.Trailer);
     }
 
     private List<Trailer> createTrailers(int count) {

@@ -9,7 +9,7 @@ import com.example.pscurzytek.popularmovies.fragments.ReviewListFragment;
 import com.example.pscurzytek.popularmovies.fragments.TrailerListFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
+    private final int PAGE_COUNT = 2;
 
     private final String[] tabTitles = new String[] { "Trailers", "Reviews" };
     private final Context context;
