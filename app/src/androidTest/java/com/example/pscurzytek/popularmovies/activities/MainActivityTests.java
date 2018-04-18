@@ -103,21 +103,6 @@ public class MainActivityTests {
         onView(withId(R.id.trailer_item)).check(matches(isDisplayed()));
     }
 
-    // TODO: click on a trailer and check if YT intend is fired up
-//    @Test
-//    public void clickThumbnail_thenClickPlayOnFirstTrailer_playsYouTubeVideo() {
-//        // given
-//        when(movieService.getPopular(null)).thenReturn(createMovies(1));
-//        when(movieService.getTrailers(1)).thenReturn(createTrailers(2));
-//
-//        testRule.launchActivity(null);
-//        onData(withMovieId(1)).perform(click());
-//
-//        // when
-//
-//        // then
-//    }
-
     @Test
     public void clickThumbnail_thenClickReviews_displaysMovieDetailsAndReviews() {
         // given
@@ -131,7 +116,7 @@ public class MainActivityTests {
         onView(allOf(withText("Reviews"), isDescendantOfA(withId(R.id.movie_details_tabs)))).perform(click());
 
         // then
-        onView(withId(R.id.review_item)).check(matches(isDisplayed()));
+        onView(withId(R.id.tabs)).check(matches(isDisplayed()));
     }
 
     private Review createReview(int movieId) {

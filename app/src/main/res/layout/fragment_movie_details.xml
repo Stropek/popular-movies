@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.pscurzytek.popularmovies.fragments.MovieDetailsFragment">
 
-    <!--TODO: add a button to mark movie as favorite -->
-
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="match_parent"
@@ -32,6 +30,16 @@
         app:layout_constraintTop_toBottomOf="@+id/title_tv"
         app:srcCompat="@mipmap/ic_launcher"
         tools:contentDescription="@string/sample_title" />
+
+    <ImageView
+        android:id="@+id/star_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@android:drawable/btn_star_big_off"
+        app:layout_constraintEnd_toEndOf="@+id/poster_iv"
+        app:layout_constraintTop_toTopOf="@+id/poster_iv" />
 
     <TextView
         android:id="@+id/releaseDate_tv"
