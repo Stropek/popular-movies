@@ -110,6 +110,28 @@ public class MovieDataProviderTests {
         // then
         assertEquals("Unexpected number of movies", movies.getCount(), 10);
     }
+    @Test
+    public void query_with_movies_by_id_uri_returns_selected_movie() {
+        // given
+        ContentResolver contentResolver = _context.getContentResolver();
+        ContentObserver contentObserver = TestContentObserver.getTestContentObserver();
+        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+        Uri movieUri = uri.buildUpon().appendPath("5").build();
+
+        setObservedUriOnContentResolver(contentResolver, uri, contentObserver);
+
+        for (int i = 0; i < 10; i++) {
+            insertMovie(contentResolver, uri, "movie " + i);
+        }
+
+        // when
+        Cursor movies = contentResolver.query(movieUri, null, null, null, null);
+
+        // then
+        movies.moveToFirst();
+        assertEquals("Unexpected number of movies", movies.getCount(), 1);
+        assertEquals(5, movies.getInt(movies.getColumnIndex(MovieContract.MovieEntry._ID)));
+    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void delete_with_unknown_uri_should_throw_unsupported_operation_exception() {

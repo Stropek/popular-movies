@@ -44,6 +44,16 @@ public class MovieDataProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case MOVIE_ENTRY_WITH_ID:
+                String id = uri.getLastPathSegment();
+                cursor = db.query(MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        MovieContract.MovieEntry._ID + "=?",
+                        new String[] {id},
+                        null,
+                        null,
+                        sortOrder);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown operation URI: " + uri);
         }

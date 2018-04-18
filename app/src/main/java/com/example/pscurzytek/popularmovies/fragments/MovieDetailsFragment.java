@@ -17,9 +17,7 @@ import com.example.pscurzytek.popularmovies.adapters.TabFragmentPagerAdapter;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
-public class MovieDetailsFragment extends Fragment
-{
-
+public class MovieDetailsFragment extends Fragment {
     private Movie movie;
     private Activity activity;
 
@@ -57,6 +55,9 @@ public class MovieDetailsFragment extends Fragment
 
         TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        // TODO: need query by ID
+//        getContext().getContentResolver().query()
 
         return view;
     }

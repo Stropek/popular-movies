@@ -37,6 +37,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     }
 
+    public void onFavoriteClicked(View view) {
+        toggleFavorite(view.findViewById(R.id.favorite_iv));
+    }
+
+    private void toggleFavorite(View favoriteStar) {
+//        if (favoriteStar.getTa)
+    }
+
     private void loadDetailsFragments() {
         Runnable pendingRunnable = new Runnable() {
             public void run() {  // update the main content by replacing fragments
