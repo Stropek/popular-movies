@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sort_mostPopular:
                 sortOrder = SortOrder.MostPopular;
                 break;
+            case R.id.action_sort_favorite:
+                sortOrder = SortOrder.Favorite;
+                break;
         }
 
         if (current != sortOrder) {

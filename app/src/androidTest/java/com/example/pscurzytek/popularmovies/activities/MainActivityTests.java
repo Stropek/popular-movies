@@ -1,5 +1,7 @@
 package com.example.pscurzytek.popularmovies.activities;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -34,10 +36,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static com.example.pscurzytek.popularmovies.utils.MovieMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTests {
+
+    private final Context _context = InstrumentationRegistry.getTargetContext();
 
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class, false, false);
@@ -48,7 +54,7 @@ public class MainActivityTests {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        PopularMoviesApp app = (PopularMoviesApp) InstrumentationRegistry.getTargetContext().getApplicationContext();
+        PopularMoviesApp app = (PopularMoviesApp) _context.getApplicationContext();
 
         TestAppComponent testAppComponent = DaggerTestAppComponent.builder()
                 .movieServiceModule(new TestMovieServiceModule())
@@ -72,7 +78,7 @@ public class MainActivityTests {
     }
 
     @Test
-    public void toggleSortOrder_displaysHighestRatedMovies() {
+    public void selectHighestRated_displaysHighestRatedMovies() {
         // given
         List<Movie> movies = createMovies(10);
         when(movieService.getTopRated(null)).thenReturn(movies);
@@ -86,6 +92,24 @@ public class MainActivityTests {
 
         // then
         onView(withId(R.id.thumbnails_grid)).check(matches(withAdaptedData(withMovieId(10))));
+    }
+
+    @Test
+    public void selectFavorite_displaysFavoriteMovies() {
+        // given
+        List<Movie> movies = createMovies(10);
+        when(movieService.getTopRated(null)).thenReturn(movies);
+        when(movieService.getFavorites(any(Cursor.class))).thenReturn(movies.subList(4, 5));
+
+        testRule.launchActivity(null);
+        onView(withId(R.id.thumbnails_grid)).check(matches(not(withAdaptedData(withMovieId(1)))));
+
+        // when
+        onView(withId(R.id.action_sort)).perform(click());
+        onView(withText("Favorite")).perform(click());
+
+        // then
+        onView(withId(R.id.thumbnails_grid)).check(matches(withAdaptedData(withMovieId(5))));
     }
 
     @Test

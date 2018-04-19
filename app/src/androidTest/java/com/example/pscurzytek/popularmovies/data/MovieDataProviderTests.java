@@ -175,6 +175,7 @@ public class MovieDataProviderTests {
 
     private Uri insertMovie(ContentResolver contentResolver, Uri uri, String title) {
         ContentValues contentValues = new ContentValues();
+
         contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
 
         return contentResolver.insert(uri, contentValues);

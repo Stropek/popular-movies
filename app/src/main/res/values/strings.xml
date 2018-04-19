@@ -6,6 +6,7 @@
     <string name="action_sort">Sort</string>
     <string name="action_sort_mostPopular">Most popular</string>
     <string name="action_sort_topRated">Top rated</string>
+    <string name="action_favorite">Favorite</string>
 
     <string name="sample_title">Zootopia</string>
     <string name="sample_releaseDate">2015/01/01</string>

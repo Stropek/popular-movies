@@ -1,11 +1,14 @@
 package com.example.pscurzytek.popularmovies.loaders;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.example.pscurzytek.popularmovies.data.MovieContract;
 import com.example.pscurzytek.popularmovies.enums.SortOrder;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.example.pscurzytek.popularmovies.services.MovieService;
@@ -35,6 +38,11 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
                     break;
                 case TopRated:
                     movies = movieService.getTopRated(null);
+                    break;
+                case Favorite:
+                    Uri moviesUri = MovieContract.MovieEntry.CONTENT_URI;
+                    Cursor favorites = getContext().getContentResolver().query(moviesUri, null, null, null, null);
+                    movies = movieService.getFavorites(favorites);
                     break;
             }
 

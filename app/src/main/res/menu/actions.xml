@@ -13,6 +13,8 @@
                 android:title="@string/action_sort_mostPopular" />
             <item android:id="@+id/action_sort_topRated"
                 android:title="@string/action_sort_topRated" />
+            <item android:id="@+id/action_sort_favorite"
+                android:title="@string/action_favorite" />
 
         </menu>
     </item>
