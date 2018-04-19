@@ -1,6 +1,9 @@
 package com.example.pscurzytek.popularmovies.fragments;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
 import com.example.pscurzytek.popularmovies.adapters.TabFragmentPagerAdapter;
+import com.example.pscurzytek.popularmovies.data.MovieContract;
 import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -39,6 +43,7 @@ public class MovieDetailsFragment extends Fragment {
         TextView voteAverageTextView = view.findViewById(R.id.voteAverage_tv);
         TextView plotTextView = view.findViewById(R.id.plot_tv);
         ImageView posterImageView = view.findViewById(R.id.poster_iv);
+        ImageView favoriteImageView = view.findViewById(R.id.favorite_iv);
 
         if (movie != null) {
             titleTextView.setText(movie.getTitle());
@@ -48,6 +53,16 @@ public class MovieDetailsFragment extends Fragment {
             posterImageView.setContentDescription(movie.getFullPosterPath());
 
             Picasso.with(activity).load(movie.getFullPosterPath()).into(posterImageView);
+
+            Uri movieUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(movie.getIdAsString()).build();
+            Cursor cursor = getContext().getContentResolver().query(movieUri, null, null, null, null);
+
+            if (cursor.getCount() > 0) {
+                favoriteImageView.setTag("favorite");
+                favoriteImageView.setImageDrawable(getResources().getDrawable(android.R.drawable.btn_star_big_on));
+            }
+
+            cursor.close();
         }
 
         ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
@@ -55,9 +70,6 @@ public class MovieDetailsFragment extends Fragment {
 
         TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        // TODO: need query by ID
-//        getContext().getContentResolver().query()
 
         return view;
     }

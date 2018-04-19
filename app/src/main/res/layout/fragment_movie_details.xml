@@ -39,6 +39,7 @@
         android:layout_marginTop="8dp"
         android:src="@android:drawable/btn_star_big_off"
         android:onClick="onFavoriteClicked"
+        android:tag="notFavorite"
         app:layout_constraintEnd_toEndOf="@+id/poster_iv"
         app:layout_constraintTop_toTopOf="@+id/poster_iv" />
 

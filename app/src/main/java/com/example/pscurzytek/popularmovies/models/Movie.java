@@ -1,5 +1,9 @@
 package com.example.pscurzytek.popularmovies.models;
 
+import android.content.ContentValues;
+
+import com.example.pscurzytek.popularmovies.Constants;
+import com.example.pscurzytek.popularmovies.data.MovieContract;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -114,5 +118,18 @@ public class Movie implements Serializable, ObjectWithId {
     @Override
     public String getIdAsString() {
         return String.format("%s", id);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MovieContract.MovieEntry._ID, id);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_TITLE, title);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTER, posterPath);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_SYNOPSIS, overview);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, voteAverage);
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, releaseDate);
+
+        return contentValues;
     }
 }
