@@ -52,7 +52,11 @@ public class MovieDetailsFragment extends Fragment {
             plotTextView.setText(movie.getOverview());
             posterImageView.setContentDescription(movie.getFullPosterPath());
 
-            Picasso.with(activity).load(movie.getFullPosterPath()).into(posterImageView);
+            Picasso.with(activity)
+                    .load(movie.getFullPosterPath())
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_placeholder)
+                    .into(posterImageView);
 
             Uri movieUri = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(movie.getIdAsString()).build();
             Cursor cursor = getContext().getContentResolver().query(movieUri, null, null, null, null);
