@@ -1,14 +1,11 @@
 package com.example.pscurzytek.popularmovies.activities;
 
-import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.pscurzytek.popularmovies.Constants;
 import com.example.pscurzytek.popularmovies.R;
@@ -21,7 +18,9 @@ public class MainActivity extends AppCompatActivity
     implements MovieListFragment.OnMoviesLoadedListener, MovieListFragment.OnMovieSelectedListener {
 
     private SortOrder sortOrder = SortOrder.MostPopular;
-    private Handler handler;
+    private MovieDetailsFragment detailsFragment;
+    private MovieListFragment listFragment;
+
     private boolean isBigScreen;
 
     @Override
@@ -29,10 +28,28 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        handler = new Handler();
         isBigScreen = findViewById(R.id.movie_details_fl) != null;
 
-        loadMainFragments();
+        if (savedInstanceState == null) {
+            loadMainFragments();
+        } else {
+            sortOrder = (SortOrder) savedInstanceState.get(Constants.StateKeys.SortOrder);
+            listFragment = (MovieListFragment) getSupportFragmentManager().getFragment(savedInstanceState, Constants.StateKeys.MovieListFragment);
+            if (isBigScreen) {
+                detailsFragment = (MovieDetailsFragment) getSupportFragmentManager().getFragment(savedInstanceState, Constants.StateKeys.MovieDetailsFragment);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(Constants.StateKeys.SortOrder, sortOrder);
+        getSupportFragmentManager().putFragment(outState, Constants.StateKeys.MovieListFragment, listFragment);
+        if (isBigScreen) {
+            getSupportFragmentManager().putFragment(outState, Constants.StateKeys.MovieDetailsFragment, detailsFragment);
+        }
     }
 
     @Override
@@ -67,14 +84,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMoviesLoaded(final Movie movie) {
         if (isBigScreen) {
-            reloadDetailsFragment(movie);
+            loadDetailsFragment(movie);
         }
     }
 
     @Override
     public void onMovieSelected(Movie movie) {
         if (isBigScreen) {
-            reloadDetailsFragment(movie);
+            loadDetailsFragment(movie);
+            listFragment.setCurrentMovie(movie);
         }
     }
 
@@ -84,16 +102,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onReviewClicked(View view) {
-        TextView content = view.findViewById(R.id.content_tv);
-        if (content.getMaxLines() == 2) {
-            content.setMaxLines(Integer.MAX_VALUE);
-        } else {
-            content.setMaxLines(2);
-        }
+        OnClickHandlers.onReviewClicked(view);
+    }
+
+    public void onFavoriteClicked(View view) {
+        OnClickHandlers.onFavoriteClicked(view, getResources(), detailsFragment.getMovie());
     }
 
     private void loadMainFragments() {
-        Fragment listFragment = getListFragment();
+        listFragment = getListFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.movie_list_fl, listFragment);
@@ -102,8 +119,16 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
     }
 
-    private Fragment getListFragment() {
-        Fragment fragment = new MovieListFragment();
+    private void loadDetailsFragment(final Movie movie) {
+        detailsFragment = getDetailsFragment(movie);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.movie_details_fl, detailsFragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    private MovieListFragment getListFragment() {
+        MovieListFragment fragment = new MovieListFragment();
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BundleKeys.SortOrder, sortOrder);
@@ -112,27 +137,13 @@ public class MainActivity extends AppCompatActivity
         return fragment;
     }
 
-    private Fragment getDetailsFragment(Movie movie) {
-        Fragment fragment = new MovieDetailsFragment();
+    private MovieDetailsFragment getDetailsFragment(Movie movie) {
+        MovieDetailsFragment fragment = new MovieDetailsFragment();
 
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BundleKeys.MovieDetails, movie);
         fragment.setArguments(bundle);
 
         return fragment;
-    }
-
-    private void reloadDetailsFragment(final Movie movie) {
-        Runnable detailsFragment = new Runnable() {
-            public void run() {  // update the main content by replacing fragments
-                Fragment fragment = getDetailsFragment(movie);
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.movie_details_fl, fragment);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
-
-        handler.post(detailsFragment);
     }
 }

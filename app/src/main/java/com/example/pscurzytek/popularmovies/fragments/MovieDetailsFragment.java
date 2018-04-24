@@ -2,7 +2,6 @@ package com.example.pscurzytek.popularmovies.fragments;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -22,6 +21,7 @@ import com.example.pscurzytek.popularmovies.models.Movie;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsFragment extends Fragment {
+
     private Movie movie;
     private Activity activity;
 
@@ -29,9 +29,20 @@ public class MovieDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
+        loadMovie(savedInstanceState);
+    }
 
-        Bundle arguments = getArguments();
-        movie = (Movie) arguments.getSerializable(Constants.BundleKeys.MovieDetails);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadMovie(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(Constants.StateKeys.Movie, movie);
     }
 
     @Override
@@ -67,14 +78,26 @@ public class MovieDetailsFragment extends Fragment {
             }
 
             cursor.close();
+
+            ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
+            viewPager.setAdapter(new TabFragmentPagerAdapter(getChildFragmentManager(), activity, movie.getId()));
+
+            TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
+            tabLayout.setupWithViewPager(viewPager);
         }
 
-        ViewPager viewPager = view.findViewById(R.id.movie_details_vp);
-        viewPager.setAdapter(new TabFragmentPagerAdapter(getChildFragmentManager(), activity, movie.getId()));
-
-        TabLayout tabLayout = view.findViewById(R.id.movie_details_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
         return view;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    private void loadMovie(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            movie = (Movie) getArguments().getSerializable(Constants.BundleKeys.MovieDetails);
+        } else {
+            movie = (Movie) savedInstanceState.getSerializable(Constants.StateKeys.Movie);
+        }
     }
 }

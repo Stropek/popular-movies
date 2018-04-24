@@ -35,6 +35,7 @@ public class MovieListFragment extends Fragment
 
     private static final int MOVIE_LOADER_ID = 1;
     private SortOrder sortOrder = SortOrder.MostPopular;
+    private Movie currentMovie;
 
     private Activity activity;
     private MovieArrayAdapter movieArrayAdapter;
@@ -51,13 +52,22 @@ public class MovieListFragment extends Fragment
         app.appComponent.inject(this);
 
         movieArrayAdapter = new MovieArrayAdapter(activity);
-
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            sortOrder = (SortOrder) arguments.get(Constants.BundleKeys.SortOrder);
-        }
+        loadList(savedInstanceState);
 
         getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadList(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(Constants.StateKeys.Movie, currentMovie);
     }
 
     @Override
@@ -96,8 +106,10 @@ public class MovieListFragment extends Fragment
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
         movieArrayAdapter.clear();
         movieArrayAdapter.addAll(data);
-        if (data.size() > 0) {
+        if (data.size() > 0 && currentMovie == null) {
             moviesLoadedListener.onMoviesLoaded(data.get(0));
+        } else {
+            moviesLoadedListener.onMoviesLoaded(currentMovie);
         }
     }
 
@@ -117,6 +129,12 @@ public class MovieListFragment extends Fragment
         }
     }
 
+    public void setCurrentMovie(Movie movie) {
+        if (movie != null) {
+            currentMovie = movie;
+        }
+    }
+
     public interface OnMoviesLoadedListener {
         void onMoviesLoaded(Movie movie);
     }
@@ -125,5 +143,15 @@ public class MovieListFragment extends Fragment
         void onMovieSelected(Movie movie);
 
         Boolean isBigScreen();
+    }
+
+    private void loadList(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            currentMovie = (Movie) getArguments().getSerializable(Constants.BundleKeys.MovieDetails);
+            sortOrder = (SortOrder) getArguments().get(Constants.BundleKeys.SortOrder);
+        } else {
+            currentMovie = (Movie) savedInstanceState.getSerializable(Constants.StateKeys.Movie);
+            sortOrder = (SortOrder) savedInstanceState.get(Constants.StateKeys.SortOrder);
+        }
     }
 }
